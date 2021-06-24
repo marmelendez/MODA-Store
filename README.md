@@ -1,7 +1,7 @@
 # MODA-Store
 ## El equipo
 ¡Hola! Nosotros somos el equipo 25 del curso: Desarrollo Móvil para Android de BEDU
-Los integrantes del equipo:
+### Los integrantes del equipo:
 - Oscar Tomar Guerrero Arce
 - Jose Armando Cano Meza
 - Lizbeth Maribel Melendez Delgado
