@@ -7,7 +7,7 @@ class User (val idUser: String){
     var email = ""
     var password = ""
     var address = ""
-    var shoppingCart = mutableListOf<String>()
+    var shoppingCart = mutableListOf<Product>()
     var orders = mutableListOf<String>()
     var devolutions = mutableListOf<String>()
 
@@ -17,7 +17,7 @@ class User (val idUser: String){
     }
 
     @JvmName("getShoppingCart1")
-    fun getShoppingCart(): List1<String> {
+    private fun getShoppingCart(): List1<Product> {
         return this.shoppingCart
     }
 
@@ -31,43 +31,70 @@ class User (val idUser: String){
         return this.devolutions
     }
 
-    fun set(address: String) {
+    @JvmName("setName1")
+    private fun setName(name: String) {
+        this.name = name
+    }
+
+    @JvmName("setEmail1")
+    private fun setEmail(email: String) {
+        this.email = email
+    }
+
+    @JvmName("setPassword1")
+    private fun setPassword(password: String) {
+        this.password = password
+    }
+
+    @JvmName("setAddress1")
+    private fun setAddress(address: String) {
         this.address = address
+    }
+
+    fun displayShoppingCart() {
+        println("---------- Shopping Cart ----------")
+        getShoppingCart().forEach() {
+            println(it.getName())
+        }
     }
 
     fun signIn () {
         print("---------- Sign In ----------\n- Please enter your name:")
-        this.name = readLine().toString()
+        setName(readLine().toString())
         print("- Now your email:")
-        this.email = readLine().toString()
+        setEmail(readLine().toString())
         print("- Lastly your password:")
-        this.password = readLine().toString() //Encriptar contraseña
+        setPassword(readLine().toString())//Encriptar contraseña
         print("Welcome! now you have an account")
     }
 
-    fun searchProduct() {
+    fun searchProduct(store: Store) {
         var flag = true
         while (flag){
-            print("Hi there, which product are you looking for? ")
-            var product = readLine().toString()
-            if (false){ //this.catalogue.contains(product)
-                println("We found the next results :)")
-                flag = false
-            }else {
-                print("Sorry no match found, wanna try with something else? y/n")
-                var answer = readLine().toString()
-                if (answer == "n") flag = false
+            var count = 0
+            print("\n---------- Search ----------\nHi there, which product are you looking for? ")
+            var productName = readLine().toString()
+            store.getProductNames().forEach(){
+                if (it.toLowerCase().contains(productName.toLowerCase())){ //this.catalogue.contains(product)
+                    count ++
+                }
             }
+            if (count > 0){
+                print(" We found ${count} results :)\n -> Do you want to search another product? y/n: ")
+            } else{
+                print("Sorry no match found :(\n -> Do you want to search another product? y/n: ")
+            }
+            if (readLine().toString() == "n") flag = false
         }
     }
 
-    fun addToCart(idProduct: String) {
-        this.shoppingCart.add(idProduct)
+    fun addToCart(product: Product) {
+        println("The product ${product.getName()} has been added to your cart")
+        this.shoppingCart.add(product)
     }
 
-    fun removeFromCart(idProduct: String) {
-        this.shoppingCart.remove(idProduct)
-
+    fun removeFromCart(product: Product) {
+        this.shoppingCart.remove(product)
     }
 
     fun makePurchase(idOrder: String) {
@@ -77,13 +104,4 @@ class User (val idUser: String){
     fun makeRefund(idRefund: String) {
         this.devolutions.add(idRefund)
     }
-
-    fun checkOrderStatus(idOrder: String) {
-        
-    }
-
-    fun checkDevolutionStatus(idRefund: String) {
-
-    }
-
 }
