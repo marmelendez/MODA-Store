@@ -28,8 +28,11 @@ fun main() {
         200F,
         70)
 
-    //Instanciar clase Store y añadir productos al catalogo
+    //Instanciar clase Store y añadir productos y categorias al catalogo
     var myStore = Store()
+    myStore.addCategory(myCategory1)
+    myStore.addCategory(myCategory2)
+
     myStore.addProduct(myProduct1)
     myStore.addProduct(myProduct2)
     myStore.addProduct(myProduct3)
@@ -49,9 +52,14 @@ fun main() {
     //Agregar al carrito
     myUser.addToCart(myProduct1)
     myUser.addToCart(myProduct2)
+    myUser.addToCart(myProduct3)
     myUser.displayShoppingCart()
 
     //Eliminar un producto del carrito
     myUser.removeFromCart(myProduct1)
     myUser.displayShoppingCart()
+
+    //Realizar compra
+    myUser.makePurchase()
+
 }
