@@ -18,4 +18,9 @@ class Product(
     fun getName(): String{
         return this.name.toString()
     }
+
+    @JvmName("getPrice1")
+    fun getPrice(): Float{
+        return this.price.toFloat()
+    }
 }
