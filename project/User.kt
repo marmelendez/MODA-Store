@@ -94,11 +94,19 @@ class User (val idUser: String){
     }
 
     fun removeFromCart(product: Product) {
+        println("The product ${product.getName()} has been removed to your cart")
         this.shoppingCart.remove(product)
     }
 
-    fun makePurchase(idOrder: String) {
-        this.orders.add(idOrder)
+    fun makePurchase() {
+        println("---------- Purchase ----------")
+        var total = 0F
+        shoppingCart.forEach() {
+            println(" - ${it.getName()}\t $ ${it.getPrice()}")
+            total += it.getPrice()
+        }
+        var iva = total * 0.16F
+        println("Subtotal: $ ${total}\nIVA: ${iva}\nTotal a pagar: ${total + iva}")
     }
 
     fun makeRefund(idRefund: String) {
