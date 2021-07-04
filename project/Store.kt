@@ -107,7 +107,6 @@ class Store {
             print("- Quantity: ")
             var quantity = readLine()?.toInt()
             //var newProduct = Product(id,name,color,size,price,quantity)
-
             print("Do you want to add another product? y/n: ")
             if (readLine().toString() == "n") {flag = false}
         }

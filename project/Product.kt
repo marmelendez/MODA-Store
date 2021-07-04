@@ -19,6 +19,11 @@ class Product(
         return this.name.toString()
     }
 
+    @JvmName("getCategory1")
+    fun getCategory(): String{
+        return this.category.toString()
+    }
+
     @JvmName("getPrice1")
     fun getPrice(): Float{
         return this.price.toFloat()

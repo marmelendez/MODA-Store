@@ -2,12 +2,15 @@ package project
 
 import kotlin.collections.List as List1
 
-class User (val idUser: String){
+open class User (val idUsers: Int, val name: String, val email: String, val password : String, val address: String,
+                 val shoppingCart: MutableList<Product>){
+    /*
     var name = ""
     var email = ""
     var password = ""
     var address = ""
     var shoppingCart = mutableListOf<Product>()
+*/
     var orders = mutableListOf<String>()
     var devolutions = mutableListOf<String>()
 
@@ -30,7 +33,7 @@ class User (val idUser: String){
     fun getDevolutions(): List1<String>{
         return this.devolutions
     }
-
+/*
     @JvmName("setName1")
     private fun setName(name: String) {
         this.name = name
@@ -50,6 +53,7 @@ class User (val idUser: String){
     private fun setAddress(address: String) {
         this.address = address
     }
+ */
 
     fun displayShoppingCart() {
         println("---------- Shopping Cart ----------")
@@ -57,7 +61,7 @@ class User (val idUser: String){
             println(it.getName())
         }
     }
-
+/*
     fun signIn () {
         print("---------- Sign In ----------\n- Please enter your name:")
         setName(readLine().toString())
@@ -67,6 +71,7 @@ class User (val idUser: String){
         setPassword(readLine().toString())//Encriptar contraseña
         print("Welcome! now you have an account")
     }
+ */
 
     fun searchProduct(store: Store) {
         var flag = true

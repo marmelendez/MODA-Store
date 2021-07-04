@@ -1,65 +1,24 @@
 package project
 
 fun main() {
-    //Instanciar clase Category
-    var myCategory1 = Category(10000,"Dama")
-    var myCategory2 = Category(10001,"Caballero")
+    var categories = setCategory()
+    var products = setProducts(categories)
+    var shoppingcart = setShoppingCart(products)
+    var store = setStore(categories, products)
+    var users = setUsers(shoppingcart)
 
-    //Instanciar clase Product
-    var myProduct1 = Product(10000,
-        "Blusa estampada",
-        myCategory1,
-        "Azul",
-        "S",
-        130F,
-        100)
-    var myProduct2 = Product(10001,
-        "Pantalon mezclilla",
-        myCategory2,
-        "Negro",
-        "XL",
-        350F,
-        50)
-    var myProduct3 = Product(10002,
-        "Camisa con cuello",
-        myCategory2,
-        "Blanca",
-        "M",
-        200F,
-        70)
+    users.forEach() {
+        println(" ID: ${it.getId()}\t Name: ${it.getName()}\t Email: ${it.getEmail()}")
+    }
 
-    //Instanciar clase Store y añadir productos y categorias al catalogo
-    var myStore = Store()
-    myStore.addCategory(myCategory1)
-    myStore.addCategory(myCategory2)
-
-    myStore.addProduct(myProduct1)
-    myStore.addProduct(myProduct2)
-    myStore.addProduct(myProduct3)
-
-    //Mostrar productos
-    myStore.displayProducts()
-
-    //Instanciar clase User y uso de metodos: signIn y searchProduct
-    var myUser = User("12345")
-
-    //Solicitar datos al usuario
-    myUser.signIn()
-
-    //Buscar un producto
-    myUser.searchProduct(myStore)
-
-    //Agregar al carrito
-    myUser.addToCart(myProduct1)
-    myUser.addToCart(myProduct2)
-    myUser.addToCart(myProduct3)
-    myUser.displayShoppingCart()
-
-    //Eliminar un producto del carrito
-    myUser.removeFromCart(myProduct1)
-    myUser.displayShoppingCart()
-
-    //Realizar compra
-    myUser.makePurchase()
+    /*
+    println("\n")
+    println("Category size:${categories.size}")
+    println("Products size:${products.size}\n")
+    categories.forEach() {
+        println(" ID: ${it.getId()}\t Name: ${it.getName()}")}
+    println("\n")
+    store.displayProducts()
+     */
 
 }
