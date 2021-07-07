@@ -31,7 +31,7 @@ fun displayMenu() {
 fun evalOption(option: String): Boolean {
     when (option) {
         "1" -> myUser.searchProduct(myStore)
-        "2" -> println("registrarse")
+        "2" -> println("registrarse") //Solicitar datos, validarlos y crear un usuario registrado
         "3" -> println("iniciar sesion")
         "4" -> println("perfil")
         "5" -> {

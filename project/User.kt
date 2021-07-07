@@ -2,14 +2,14 @@ package project
 
 import kotlin.collections.List as List1
 
-class User (val idUser: String){
-    var name = ""
-    var email = ""
-    var password = ""
-    var address = ""
-    var shoppingCart = mutableListOf<Product>()
-    var orders = mutableListOf<String>()
-    var devolutions = mutableListOf<String>()
+open class User (open val idUser: Int){
+    private var name = ""
+    private var email = ""
+    private var password = ""
+    private var address = ""
+    private var shoppingCart = mutableListOf<Product>()
+    private var orders = mutableListOf<String>()
+    private var devolutions = mutableListOf<String>()
 
     @JvmName("getAddress1")
     fun getAddress(): String {
@@ -59,12 +59,17 @@ class User (val idUser: String){
     }
 
     fun signIn () {
-        print("---------- Sign In ----------\n- Please enter your name:")
+        print("---------- MODA Store | SIGN IN ----------\n- Please enter your name:")
         setName(readLine().toString())
         print("- Now your email:")
         setEmail(readLine().toString())
         print("- Lastly your password:")
-        setPassword(readLine().toString())//Encriptar contraseña
+        setPassword(readLine().toString())
+
+        //crear usuario registrado
+        val newUser = RegisteredUser(123, "aribl", "ssdds", "ddds")
+
+        //agregar a lista de usuarios de tienda
         print("Welcome! now you have an account")
     }
 

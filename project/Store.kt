@@ -4,6 +4,8 @@ package project
 class Store (val name: String){
     private var catalogProduct = mutableListOf<Product>()
     var catalogCategory = mutableListOf<Category>()
+    var listOfUsers = mutableListOf<RegisteredUser>()
+
 
     @JvmName("getName1")
     fun getName(): String {
