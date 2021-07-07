@@ -1,12 +1,12 @@
+import project.BaseDatos
 import project.Store
 import project.User
 
-val myStore = Store()
+val myStore: Store = BaseDatos.iniciar()
 val myUser = User("1000")
 
 
 fun main() {
-    //BaseDatos.iniciar()
     displayMenu()
 
 }
@@ -16,7 +16,7 @@ fun displayMenu() {
     var opcion: String = ""
 
     while (flag) {
-        print ("----------WELCOME TO MODA STORE----------" +
+        print ("----------WELCOME TO ${myStore.getName()}----------" +
                 "\n1) Search product" +
                 "\n2) Sign in" +
                 "\n3) Log in" +

@@ -72,19 +72,20 @@ class User (val idUser: String){
         var flag = true
         while (flag){
             var count = 0
-            print("\n---------- Search ----------\nHi there, which product are you looking for? ")
+            print("\n---------- MODA Store | SEARCH ----------\nHi there, which product are you looking for? ")
             var productName = readLine().toString()
-            store.getProductNames().forEach(){
-                if (it.toLowerCase().contains(productName.toLowerCase())){ //this.catalogue.contains(product)
-                    count ++
-                }
-            }
-            if (count > 0){
-                print(" We found ${count} results :)\n -> Do you want to search another product? y/n: ")
-            } else{
-                print("Sorry no match found :(\n -> Do you want to search another product? y/n: ")
-            }
-            if (readLine().toString() == "n") flag = false
+            val result = store.getCatalogProduct().filter { it.getName().toLowerCase().contains(productName.toLowerCase())}
+            count = result.size
+            val text = if(count > 0) " We found ${count} results :)" else " Sorry no match found :("
+            println(text)
+            result.forEach { println("\t${it.getIdProduct()} \t${it.getName()}") }
+
+            print("\n-> Do you want to ...?" +
+                    "\n  1) Search another product" +
+                    "\n  2) Select a product " +
+                    "\n  3) Return to menu please" +
+                    "\n -> Choose an option: ")
+            if (readLine().toString() != "1") flag = false
         }
     }
 
