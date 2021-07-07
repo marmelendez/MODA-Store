@@ -98,15 +98,73 @@ class User (val idUser: String){
         this.shoppingCart.remove(product)
     }
 
+    var user = true
+
     fun makePurchase() {
         println("---------- Purchase ----------")
-        var total = 0F
-        shoppingCart.forEach() {
-            println(" - ${it.getName()}\t $ ${it.getPrice()}")
-            total += it.getPrice()
+        //Usuario con cuenta
+        if(user == true) {
+            var total = 0F
+            println("Purchase Details")
+            shoppingCart.forEach() {
+                println(" - ${it.getName()}\t $ ${it.getPrice()}")
+                total += it.getPrice()
+            }
+            val iva = total * 0.16F
+            val totalPrice = iva + total
+            println("Subtotal: $ ${total}\nIVA: ${iva}\nTotal to pay: ${totalPrice}")
+
+            if(address == "") {
+                println("---------- Alert ----------")
+                println("You must add an address")
+                getAddress()
+            } else {
+                //Para aumentar idOrder
+                val numOrder = 1001
+                //Para Fecha
+                val now = Date()
+                val formatDate = SimpleDateFormat("yy.MM.dd")
+                val date = formatDate.format(now)
+
+
+                println("Confirm Purchase? y/n ")
+                val conf = readLine().toString()
+                if (conf == "y") {
+                    val orders = Order(
+                        numOrder,
+                        totalPrice,
+                        address,
+                        date
+                    )
+                    numOrder + 1
+
+                    println("What do you want to do now? ")
+                    println("1 Menu")
+                    println("2 Devolutions")
+                    println("3 Exit")
+                    val opcion = readLine().toString()
+                    when(opcion) {
+                        "1" -> displayMenu()
+                        "2" -> displayShoppingCart()
+                        "3" -> println("Goodbye, Come back soon")
+                        else -> println("Invalid Option")
+                    }
+
+                } else {
+                    displayMenu()
+                }
+            }
+
+
+        //Usuario sin cuenta
+        } else {
+            println("Ups, You dont have an account. You want to register? y/n ")
+            if(readLine().toString() == "y") {
+                signIn()
+            } else {
+                println("Ok, You will continue as a guest")
+            }
         }
-        var iva = total * 0.16F
-        println("Subtotal: $ ${total}\nIVA: ${iva}\nTotal a pagar: ${total + iva}")
     }
 
     fun makeRefund(idRefund: String) {
