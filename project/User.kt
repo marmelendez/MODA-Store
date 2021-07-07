@@ -70,14 +70,15 @@ class User (val idUser: String){
 
     fun searchProduct(store: Store) {
         var flag = true
+        var option: String
         while (flag){
-            var count = 0
             print("\n---------- MODA Store | SEARCH ----------\nHi there, which product are you looking for? ")
+
             var productName = readLine().toString()
+
             val result = store.getCatalogProduct().filter { it.getName().toLowerCase().contains(productName.toLowerCase())}
-            count = result.size
-            val text = if(count > 0) " We found ${count} results :)" else " Sorry no match found :("
-            println(text)
+            val text = if(result.isNotEmpty()) " We found ${result.size} results :)" else " Sorry no match found :("
+            println("${text}\n\tID \tName")
             result.forEach { println("\t${it.getIdProduct()} \t${it.getName()}") }
 
             print("\n-> Do you want to ...?" +
@@ -85,8 +86,28 @@ class User (val idUser: String){
                     "\n  2) Select a product " +
                     "\n  3) Return to menu please" +
                     "\n -> Choose an option: ")
-            if (readLine().toString() != "1") flag = false
+            option = readLine().toString()
+            if (option!= "1") flag = false
+            if (option == "2") {
+                print(" -> Please enter the product ID: ")
+                var id = readLine().toString()
+                var selectedProduct = store.getCatalogProduct().filter { id == it.getIdProduct().toString() }
+                try {
+                    selectProduct(selectedProduct[0])
+                } catch(e: Exception) {
+                    println("Sorry, couldn't find a product with the ${id} id :(")
+                }
+            }
         }
+    }
+
+    fun selectProduct(product: Product) {
+        println("\n---------- MODA Store | ${product.getName()} ----------" +
+                "\nID: ${product.getIdProduct()}" +
+                "\nPrice: ${product.getPrice()}" +
+                "\nColor: ${product.getColor()}" +
+                "\nCategory: ${product.getCategory().getName()}" +
+                "\nSize: ${product.getQuantity().map { it.key }}")
     }
 
     fun addToCart(product: Product) {

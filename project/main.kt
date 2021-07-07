@@ -8,7 +8,6 @@ val myUser = User("1000")
 
 fun main() {
     displayMenu()
-
 }
 
 fun displayMenu() {
