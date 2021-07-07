@@ -1,65 +1,48 @@
-package project
+import project.Store
+import project.User
+
+val myStore = Store()
+val myUser = User("1000")
+
 
 fun main() {
-    //Instanciar clase Category
-    var myCategory1 = Category(10000,"Dama")
-    var myCategory2 = Category(10001,"Caballero")
+    //BaseDatos.iniciar()
+    displayMenu()
 
-    //Instanciar clase Product
-    var myProduct1 = Product(10000,
-        "Blusa estampada",
-        myCategory1,
-        "Azul",
-        "S",
-        130F,
-        100)
-    var myProduct2 = Product(10001,
-        "Pantalon mezclilla",
-        myCategory2,
-        "Negro",
-        "XL",
-        350F,
-        50)
-    var myProduct3 = Product(10002,
-        "Camisa con cuello",
-        myCategory2,
-        "Blanca",
-        "M",
-        200F,
-        70)
+}
 
-    //Instanciar clase Store y añadir productos y categorias al catalogo
-    var myStore = Store()
-    myStore.addCategory(myCategory1)
-    myStore.addCategory(myCategory2)
+fun displayMenu() {
+    var flag = true
+    var opcion: String = ""
 
-    myStore.addProduct(myProduct1)
-    myStore.addProduct(myProduct2)
-    myStore.addProduct(myProduct3)
+    while (flag) {
+        print ("----------WELCOME TO MODA STORE----------" +
+                "\n1) Search product" +
+                "\n2) Sign in" +
+                "\n3) Log in" +
+                "\n4) Profile" +
+                "\n5) Log out" +
+                "\n-> Choose an option: ")
+        opcion = readLine().toString()
 
-    //Mostrar productos
-    myStore.displayProducts()
+        flag = evalOption(opcion)
+    }
+}
 
-    //Instanciar clase User y uso de metodos: signIn y searchProduct
-    var myUser = User("12345")
-
-    //Solicitar datos al usuario
-    myUser.signIn()
-
-    //Buscar un producto
-    myUser.searchProduct(myStore)
-
-    //Agregar al carrito
-    myUser.addToCart(myProduct1)
-    myUser.addToCart(myProduct2)
-    myUser.addToCart(myProduct3)
-    myUser.displayShoppingCart()
-
-    //Eliminar un producto del carrito
-    myUser.removeFromCart(myProduct1)
-    myUser.displayShoppingCart()
-
-    //Realizar compra
-    myUser.makePurchase()
-
+fun evalOption(option: String): Boolean {
+    when (option) {
+        "1" -> myUser.searchProduct(myStore)
+        "2" -> println("registrarse")
+        "3" -> println("iniciar sesion")
+        "4" -> println("perfil")
+        "5" -> {
+            println("salir")
+            return false
+        }
+        else -> {
+            print("Sorry, please select a valid option(1-5)")
+            evalOption(readLine().toString())
+        }
+    }
+    return true
 }
