@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class Form {
     private static SecureRandom random = new SecureRandom();
-    private static final String DICTIONARY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789#._/";
+    private static final String DICTIONARY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._/";
 
     static String passwordGenerator() {
         String password = "";

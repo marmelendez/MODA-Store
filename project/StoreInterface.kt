@@ -9,4 +9,6 @@ interface StoreInterface {
     fun addCategory(category: Category)
 
     fun addProduct(product: Product)
+
+    fun addUser(user: RegisteredUser)
 }

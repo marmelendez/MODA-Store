@@ -15,13 +15,14 @@ fun displayMenu() {
     var opcion: String = ""
 
     while (flag) {
+        clear()
         print ("----------WELCOME TO ${myStore.name}----------" +
                 "\n1) Search product" +
                 "\n2) Sign in" +
                 "\n3) Log in" +
                 "\n4) Profile" +
                 "\n5) Log out" +
-                "\n-> Choose an option: ")
+                "\n\n-> Choose an option: ")
         opcion = readLine().toString()
 
         flag = evalOption(opcion)
@@ -31,7 +32,7 @@ fun displayMenu() {
 fun evalOption(option: String): Boolean {
     when (option) {
         "1" -> myUser.searchProduct(myStore)
-        "2" -> println("registrarse") //Solicitar datos, validarlos y crear un usuario registrado
+        "2" -> myUser.signIn(myStore)
         "3" -> println("iniciar sesion")
         "4" -> println("perfil")
         "5" -> {
@@ -44,4 +45,11 @@ fun evalOption(option: String): Boolean {
         }
     }
     return true
+}
+
+
+fun clear() {
+    for (i in 0..20) {
+        println()
+    }
 }

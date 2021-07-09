@@ -2,17 +2,16 @@ package project
 
 class BaseDatos {
     companion object Base {
-        var category = mutableListOf<Category>()
-        var shoppingCart = mutableListOf<Product>()
         val myStore = Store("MODA Store")
 
         var idProduct = 1
-        var idUsers = 1
+        var idUser = 1
         var idCategory = 1
 
         fun iniciar(): Store {
             setCategory()
             setProducts()
+            setUsers()
             return this.myStore
         }
 
@@ -47,6 +46,14 @@ class BaseDatos {
             myStore.addProduct(Product(idProduct++,"Pantalon traje",category[1],"Negro",320F, mapOf("S" to 100, "M" to 50, "X" to 100)))
             myStore.addProduct(Product(idProduct++,"Playera",category[1],"Gris",180F, mapOf("S" to 100, "M" to 50, "X" to 100)))
         }
+
+
+        fun setUsers() {
+            myStore.addUser(RegisteredUser(idUser++.toString(), "tomas11", "tomas@hotmail.com", "123"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "didier32", "didier@hotmail.com", "123"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "josearm21", "josearmando@outlook.es", "123"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "maribel07", "maribel@live.com", "123"))
+        }
     }
 
 
@@ -54,19 +61,5 @@ class BaseDatos {
         shoppingCart.add(listProducts[0])
         shoppingCart.add(listProducts[1])
         return shoppingCart
-    }*/
-
-    
-/*    fun setUsers(shoppingCart: MutableList<Product>) : MutableList<RegisteredUser>{
-        listUsers.add(RegisteredUser(idUsers++,"Tomas","tomas@gmail.com",
-            "tomas123","Norte 56 No.4862, CDMX",shoppingCart))
-        listUsers.add(RegisteredUser(idUsers++,"Jose","jose@gmail.com",
-            "jose123","Sur 78 No.1135, CDMX",shoppingCart))
-        listUsers.add(RegisteredUser(idUsers++,"Lizbeth","lizbeth@gmail.com",
-            "lizbeth123","Oeste 46 No.25, Durango",shoppingCart))
-        listUsers.add(RegisteredUser(idUsers++,"Didier","didier@gmail.com",
-            "didier123","Este 56 No.63,Cancun",shoppingCart))
-        listUsers.add(RegisteredUser(idUsers++,"","","","",shoppingCart))
-        return listUsers
     }*/
 }

@@ -3,13 +3,11 @@ package project
 import kotlin.collections.List as List1
 
 open class User (open val idUser: String){
-    private var name = ""
-    private var email = ""
-    private var password = ""
     private var address = ""
     private var shoppingCart = mutableListOf<Product>()
     private var orders = mutableListOf<String>()
     private var devolutions = mutableListOf<String>()
+
 
     @JvmName("getAddress1")
     fun getAddress(): String {
@@ -31,20 +29,6 @@ open class User (open val idUser: String){
         return this.devolutions
     }
 
-    @JvmName("setName1")
-    private fun setName(name: String) {
-        this.name = name
-    }
-
-    @JvmName("setEmail1")
-    private fun setEmail(email: String) {
-        this.email = email
-    }
-
-    @JvmName("setPassword1")
-    private fun setPassword(password: String) {
-        this.password = password
-    }
 
     @JvmName("setAddress1")
     private fun setAddress(address: String) {
@@ -58,19 +42,45 @@ open class User (open val idUser: String){
         }
     }
 
-    fun signIn () {
-        print("---------- MODA Store | SIGN IN ----------\n- Please enter your name:")
-        setName(readLine().toString())
-        print("- Now your email:")
-        setEmail(readLine().toString())
-        print("- Lastly your password:")
-        setPassword(readLine().toString())
+    fun signIn (store: Store) {
+        //validar que no esten ya registrados y que sean validos
+        print("---------- MODA Store | SIGN IN ----------\n\n-> Please enter your username: ")
+        var name = readLine().toString()
+        var error1 = "--- Enter a valid username (start with a letter, can contain letters and numbers and at least 6 characters): "
+        var error2 = "--- The given username is already registered: "
+        while (!validate(name, error1,Form.validateUsername(name)) || !validate(name, error2,store.isInListOfUsersUsername(name))){
+            name = readLine().toString()
+        }
+
+        print("\n-> Now your email: ")
+        var email = readLine().toString()
+        error1 = "--- Enter a valid email (ends with @domain.com): "
+        error2 = "--- The given email is already registered: "
+        while (!validate(email, error1,Form.validateEmail(email)) || !validate(email, error2,store.isInListOfUsersEmail(email))){
+            email = readLine().toString()
+        }
+
+        print("\n-> And your password, we recommend you this one ${Form.passwordGenerator()}: ")
+        var password = readLine().toString()
+        error1 = "--- Enter a valid password (minimum length: 8,can contain letters, numbers or . / _): "
+        while (!validate(password, error1,Form.validatePassword(password))){
+            password = readLine().toString()
+        }
 
         //crear usuario registrado
-        val newUser = RegisteredUser("123", "aribl", "ssdds", "ddds")
+        val newUser = RegisteredUser(idUser, name, email, password)
+        store.addUser(newUser)
 
-        //agregar a lista de usuarios de tienda
-        print("Welcome! now you have an account")
+        //Agregar corutina
+        println("\nWelcome ${newUser.getName()}! now you have an account")
+    }
+
+    fun validate(data: String, error: String, funValidate: Boolean): Boolean {
+        if (!funValidate) {
+            print(error)
+            return false
+        }
+        return true
     }
 
     fun searchProduct(store: Store) {
@@ -86,15 +96,15 @@ open class User (open val idUser: String){
             println("${text}\n\tID \tName")
             result.forEach { println("\t${it.getIdProduct()} \t${it.getName()}") }
 
-            print("\n-> Do you want to ...?" +
+            print("\nDo you want to ...?" +
                     "\n  1) Search another product" +
                     "\n  2) Select a product " +
                     "\n  3) Return to menu please" +
-                    "\n -> Choose an option: ")
+                    "\n\n-> Choose an option: ")
             option = readLine().toString()
             if (option!= "1") flag = false
             if (option == "2") {
-                print(" -> Please enter the product ID: ")
+                print("   -> Please enter the product ID: ")
                 var id = readLine().toString()
                 var selectedProduct = store.catalogProduct.filter { id == it.getIdProduct().toString() }
                 try {
@@ -113,6 +123,15 @@ open class User (open val idUser: String){
                 "\nColor: ${product.getColor()}" +
                 "\nCategory: ${product.getCategory().getName()}" +
                 "\nSize: ${product.getQuantity().map { it.key }}")
+        print("\nDo you want to ...?" +
+                "\n  1) Add to cart" +
+                "\n  2) Add to favorites " +
+                "\n  3) Return to menu please" +
+                "\n\n-> Choose an option: ")
+        when (readLine().toString()) {
+            "1" -> addToCart(product)
+            "2" -> println("agregar a favoritos")
+        }
     }
 
     fun addToCart(product: Product) {
@@ -139,4 +158,6 @@ open class User (open val idUser: String){
     fun makeRefund(idRefund: String) {
         this.devolutions.add(idRefund)
     }
+
+    //implementar funcion de si el usuario esta registrado
 }
