@@ -15,7 +15,7 @@ fun displayMenu() {
     var opcion: String = ""
 
     while (flag) {
-        print ("----------WELCOME TO ${myStore.getName()}----------" +
+        print ("----------WELCOME TO ${myStore.name}----------" +
                 "\n1) Search product" +
                 "\n2) Sign in" +
                 "\n3) Log in" +

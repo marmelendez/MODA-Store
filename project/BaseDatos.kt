@@ -22,7 +22,7 @@ class BaseDatos {
         }
 
         fun setProducts() {
-            var category = myStore.getCatalogCategory()
+            var category = myStore.catalogCategory
             //Dama
             myStore.addProduct(Product(idProduct++,"Blusa estampada",category[0],"Rosa",130F,mapOf("S" to 100, "M" to 50, "X" to 100)))
             myStore.addProduct(Product(idProduct++,"Blusa de tirantes",category[0],"Azul",300F, mapOf("S" to 100, "M" to 50, "X" to 100)))

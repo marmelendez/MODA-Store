@@ -2,7 +2,7 @@ package project
 
 import kotlin.collections.List as List1
 
-open class User (open val idUser: Int){
+open class User (open val idUser: String){
     private var name = ""
     private var email = ""
     private var password = ""
@@ -67,7 +67,7 @@ open class User (open val idUser: Int){
         setPassword(readLine().toString())
 
         //crear usuario registrado
-        val newUser = RegisteredUser(123, "aribl", "ssdds", "ddds")
+        val newUser = RegisteredUser("123", "aribl", "ssdds", "ddds")
 
         //agregar a lista de usuarios de tienda
         print("Welcome! now you have an account")
@@ -81,7 +81,7 @@ open class User (open val idUser: Int){
 
             var productName = readLine().toString()
 
-            val result = store.getCatalogProduct().filter { it.getName().toLowerCase().contains(productName.toLowerCase())}
+            val result = store.catalogProduct.filter { it.getName().toLowerCase().contains(productName.toLowerCase())}
             val text = if(result.isNotEmpty()) " We found ${result.size} results :)" else " Sorry no match found :("
             println("${text}\n\tID \tName")
             result.forEach { println("\t${it.getIdProduct()} \t${it.getName()}") }
@@ -96,7 +96,7 @@ open class User (open val idUser: Int){
             if (option == "2") {
                 print(" -> Please enter the product ID: ")
                 var id = readLine().toString()
-                var selectedProduct = store.getCatalogProduct().filter { id == it.getIdProduct().toString() }
+                var selectedProduct = store.catalogProduct.filter { id == it.getIdProduct().toString() }
                 try {
                     selectProduct(selectedProduct[0])
                 } catch(e: Exception) {
