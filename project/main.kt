@@ -1,9 +1,9 @@
 import project.BaseDatos
 import project.Store
-import project.User
+import project.GuestUser
 
 val myStore: Store = BaseDatos.iniciar()
-val myUser = User("1000")
+val myUser = GuestUser("1000")
 
 
 fun main() {
@@ -46,7 +46,6 @@ fun evalOption(option: String): Boolean {
     }
     return true
 }
-
 
 fun clear() {
     for (i in 0..20) {

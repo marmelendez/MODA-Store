@@ -1,34 +1,48 @@
 package project;
 
 class RegisteredUser(
-        override val idUser: String,
-        private val name: String,
-        private val email: String,
-        private var password: String): User(idUser){
+        idUser: String,
+        name: String,
+        email: String,
+        password: String): GuestUser(idUser){
 
+        @JvmName("getName1")
         fun getName(): String {
                 return this.name
         }
 
-        fun getEmail(): String {
-                return this.email
-        }
+        /*override val email: String
+                get() {
+                        return this.email
+                }
 
         fun getPassword(): String {
                 return this.password
+        }*/
+
+        private fun addToCart(product: Product) {
+                println("The product ${product.getName()} has been added to your cart")
+                this.shoppingCart.add(product)
         }
 
-        fun logIn() {
-                print("\n---------- MODA Store | LOG IN ----------\nEmail or username:? ")
-                readLine().toString()
-                print("Password: ")
-                readLine().toString()
-
+        fun removeFromCart(product: Product) {
+                println("The product ${product.getName()} has been removed to your cart")
+                this.shoppingCart.remove(product)
         }
 
-        fun logOut() {
-                print("\n---------- MODA Store | LOG OUT ----------\nHi there, which product are you looking for? ")
+        fun makePurchase() {
+                println("---------- Purchase ----------")
+                var total = 0F
+                shoppingCart.forEach() {
+                        println(" - ${it.getName()}\t $ ${it.getPrice()}")
+                        total += it.getPrice()
+                }
+                var iva = total * 0.16F
+                println("Subtotal: $ ${total}\nIVA: ${iva}\nTotal a pagar: ${total + iva}")
+        }
 
+        fun makeRefund(idRefund: String) {
+                this.devolutions.add(idRefund)
         }
 }
 
