@@ -1,24 +1,56 @@
-package project
+import project.BaseDatos
+import project.Store
+import project.User
+import project.RegisteredUser
+
+val myStore: Store = BaseDatos.iniciar()
+val myUser = User("1000")
+val myRegisteredUser = RegisteredUser("","","","")
 
 fun main() {
-    var categories = setCategory()
-    var products = setProducts(categories)
-    var shoppingcart = setShoppingCart(products)
-    var store = setStore(categories, products)
-    var users = setUsers(shoppingcart)
+    displayMenu()
+}
 
-    users.forEach() {
-        println(" ID: ${it.getId()}\t Name: ${it.getName()}\t Email: ${it.getEmail()}")
+fun displayMenu() {
+    var flag = true
+    var opcion: String = ""
+
+    while (flag) {
+        clear()
+        print ("----------WELCOME TO ${myStore.name}----------" +
+                "\n1) Search product" +
+                "\n2) Sign in" +
+                "\n3) Log in" +
+                "\n4) Profile" +
+                "\n5) Log out" +
+                "\n\n-> Choose an option: ")
+        opcion = readLine().toString()
+
+        flag = evalOption(opcion)
     }
+}
 
-    /*
-    println("\n")
-    println("Category size:${categories.size}")
-    println("Products size:${products.size}\n")
-    categories.forEach() {
-        println(" ID: ${it.getId()}\t Name: ${it.getName()}")}
-    println("\n")
-    store.displayProducts()
-     */
+fun evalOption(option: String): Boolean {
+    when (option) {
+        "1" -> myUser.searchProduct(myStore)
+        "2" -> myUser.signIn(myStore)
+        "3" -> myRegisteredUser.logIn(myStore)
+        "4" -> println("perfil")
+        "5" -> {
+            println("salir")
+            return false
+        }
+        else -> {
+            print("Sorry, please select a valid option(1-5)")
+            evalOption(readLine().toString())
+        }
+    }
+    return true
+}
 
+
+fun clear() {
+    for (i in 0..20) {
+        println()
+    }
 }
