@@ -20,31 +20,33 @@ class RegisteredUser(
         return this.password
     }
 
-    fun logIn(store: Store) {
+    fun logIn(store: Store) : Boolean {
         print("\n---------- MODA Store | LOG IN ----------\nUsername: ")
         var name = readLine().toString()
         print("Password: ")
-        var passwordValidation : String = readLine().toString()
-        while (store.isInListOfUsersUsername(name) || store.isInListOfUsersPassword(passwordValidation)){
+        var password : String = readLine().toString()
+        while (store.isInListOfUsersUsername(name) || store.isInListOfUsersPassword(password)){
             println("--- There is a problem in the LogIn")
             while(store.isInListOfUsersUsername(name)){
                 println("--- This username doesn't exist, enter a valid username: ")
                 name = readLine().toString()
                 if(store.isInListOfUsersUsername(name) == false){
                     print("Password: ")
-                    passwordValidation = readLine().toString()
+                    password = readLine().toString()
                 }
             }
-            while(store.isInListOfUsersPassword(passwordValidation)){
+            while(store.isInListOfUsersPassword(password)){
                 println("--- This password doesn't match, enter a valid password: ")
-                passwordValidation = readLine().toString()
+                password = readLine().toString()
             }
         }
-        println("Welcome again to MODA Store")
+        println("Welcome again $name to MODA Store")
+        return false
     }
 
-    fun logOut() {
-        print("\n---------- MODA Store | LOG OUT ----------\nHi there, which product are you looking for? ")
+    fun logOut() : Boolean {
+        print("\n---------- MODA Store | LOG OUT ----------")
+        return true
     }
 
 /*

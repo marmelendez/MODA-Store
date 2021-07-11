@@ -7,6 +7,7 @@ open class User (open val idUser: String){
     private var shoppingCart = mutableListOf<Product>()
     private var orders = mutableListOf<String>()
     private var devolutions = mutableListOf<String>()
+    //private var favorites = mutableListOf<Product>()
 
 
     @JvmName("getAddress1")
@@ -42,7 +43,7 @@ open class User (open val idUser: String){
         }
     }
 
-    fun signIn (store: Store) {
+    fun signIn (store: Store) : Boolean {
         //validar que no esten ya registrados y que sean validos
         print("---------- MODA Store | SIGN IN ----------\n\n-> Please enter your username: ")
         var name = readLine().toString()
@@ -73,6 +74,8 @@ open class User (open val idUser: String){
 
         //Agregar corutina
         println("\nWelcome ${newUser.getName()}! now you have an account")
+
+        return false
     }
 
     fun validate(data: String, error: String, funValidate: Boolean): Boolean {
@@ -130,7 +133,13 @@ open class User (open val idUser: String){
                 "\n\n-> Choose an option: ")
         when (readLine().toString()) {
             "1" -> addToCart(product)
-            "2" -> println("agregar a favoritos")
+            "2" -> {
+                println("agregado a listan de favoritos")
+                /*
+                verifyAccount()
+                addToFavorite(product)
+                 */
+            }
         }
     }
 
@@ -160,4 +169,15 @@ open class User (open val idUser: String){
     }
 
     //implementar funcion de si el usuario esta registrado
+
+    /*
+    fun verifyAccount(){
+        getName()
+    }
+
+    fun addToFavorite(product: Product) {
+        println("The product ${product.getName()} has been added to your favorite list")
+        this.favorites.add(product)
+    }
+     */
 }
