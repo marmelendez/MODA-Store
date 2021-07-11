@@ -1,65 +1,84 @@
-package project
+import project.BaseDatos
+import project.Store
+import project.User
+import project.RegisteredUser
+
+val myStore: Store = BaseDatos.iniciar()
+val myUser = User("1000")
+val myRegisteredUser = RegisteredUser("","","","")
+var generalUser = true
 
 fun main() {
-    //Instanciar clase Category
-    var myCategory1 = Category(10000,"Dama")
-    var myCategory2 = Category(10001,"Caballero")
+    displayMenu()
+}
 
-    //Instanciar clase Product
-    var myProduct1 = Product(10000,
-        "Blusa estampada",
-        myCategory1,
-        "Azul",
-        "S",
-        130F,
-        100)
-    var myProduct2 = Product(10001,
-        "Pantalon mezclilla",
-        myCategory2,
-        "Negro",
-        "XL",
-        350F,
-        50)
-    var myProduct3 = Product(10002,
-        "Camisa con cuello",
-        myCategory2,
-        "Blanca",
-        "M",
-        200F,
-        70)
+fun displayMenu() {
+    var flag = true
+    var opcion: String = ""
 
-    //Instanciar clase Store y añadir productos y categorias al catalogo
-    var myStore = Store()
-    myStore.addCategory(myCategory1)
-    myStore.addCategory(myCategory2)
+    while (flag && generalUser) {
+        clear()
+        print ("----------WELCOME TO ${myStore.name}----------" +
+                "\n1) Search product" +
+                "\n2) Sign in" +
+                "\n3) Log in" +
+                "\n4) Exit" +
+                "\n\n-> Choose an option: ")
+        opcion = readLine().toString()
+        flag = userMenu(opcion)
+    }
+    while (flag && !generalUser) {
+        clear()
+        print ("----------WELCOME TO ${myStore.name}----------" +
+                "\n1) Search product" +
+                "\n2) Profile" +
+                "\n3) Log out" +
+                "\n4) Exit" +
+                "\n\n-> Choose an option: ")
+        opcion = readLine().toString()
+        flag = registeredUserMenu(opcion)
+    }
+}
 
-    myStore.addProduct(myProduct1)
-    myStore.addProduct(myProduct2)
-    myStore.addProduct(myProduct3)
+fun userMenu(option: String): Boolean {
+    when (option) {
+        "1" -> myUser.searchProduct(myStore)
+        "2" -> generalUser = myUser.signIn(myStore)
+        "3" -> generalUser = myRegisteredUser.logIn(myStore)
+        "4" -> {
+            println("Thanks to be with us")
+            return false
+        }
+        else -> {
+            print("Sorry, please select a valid option(1-4)")
+            userMenu(readLine().toString())
+        }
+    }
+    return true
+}
 
-    //Mostrar productos
-    myStore.displayProducts()
+fun registeredUserMenu(option: String): Boolean {
+    when (option) {
+        "1" -> myRegisteredUser.searchProduct(myStore)
+        "2" -> println("Mi perfil")//myRegisteredUser.perfil()
+        "3" -> {
+            generalUser = myRegisteredUser.logOut()
+            displayMenu()
+        }
+        "4" -> {
+            println("Thanks to be with us")
+            return false
+        }
+        else -> {
+            print("Sorry, please select a valid option(1-4)")
+            registeredUserMenu(readLine().toString())
+        }
+    }
+    return true
+}
 
-    //Instanciar clase User y uso de metodos: signIn y searchProduct
-    var myUser = User("12345")
-
-    //Solicitar datos al usuario
-    myUser.signIn()
-
-    //Buscar un producto
-    myUser.searchProduct(myStore)
-
-    //Agregar al carrito
-    myUser.addToCart(myProduct1)
-    myUser.addToCart(myProduct2)
-    myUser.addToCart(myProduct3)
-    myUser.displayShoppingCart()
-
-    //Eliminar un producto del carrito
-    myUser.removeFromCart(myProduct1)
-    myUser.displayShoppingCart()
-
-    //Realizar compra
-    myUser.makePurchase()
-
+fun clear() {
+    for (i in 0..20) {
+        println()
+    }
 }
