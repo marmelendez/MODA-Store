@@ -140,4 +140,26 @@ Registered User
 - compras: id, carrito, total, fecha
 - agregar a carrito
  */
+=======
+
+/*
+fun perfil(){
+        println("Bienvenido a tu perfil")
+        println("Nombre: ${getName()}")
+        println("Email: ${getEmail()}")
+    }
+fun addToFavorites(){
+}
+fun removeFromFavorites(){
+}
+fun changeSetting(){
+}
+fun setPassword(){
+}
+fun setAddress(){
+}
+fun setPaymentMethod(){
+}
+ */
+}
 

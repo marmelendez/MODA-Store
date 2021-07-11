@@ -55,13 +55,11 @@ open class User (open val idUser: String) {
             print(error)
             return false
         }
-        return true
-    }
 
     fun searchProduct(store: Store) {
         var flag = true
         var option: String
-        while (flag) {
+        while (flag){
             print("\n---------- MODA Store | SEARCH ----------\nHi there, which product are you looking for? ")
 
             var productName = readLine().toString()
@@ -86,9 +84,34 @@ open class User (open val idUser: String) {
                 var selectedProduct = store.catalogProduct.filter { id == it.getIdProduct().toString() }
                 try {
                     selectProduct(selectedProduct[0])
-                } catch (e: Exception) {
+                } catch(e: Exception) {
                     println("Sorry, couldn't find a product with the ${id} id :(")
                 }
+            }
+        }
+    }
+
+    fun selectProduct(product: Product) {
+        println("\n---------- MODA Store | ${product.getName()} ----------" +
+                "\nID: ${product.getIdProduct()}" +
+                "\nPrice: ${product.getPrice()}" +
+                "\nColor: ${product.getColor()}" +
+                "\nCategory: ${product.getCategory().getName()}" +
+                "\nSize: ${product.getQuantity().map { it.key }}")
+        print("\nDo you want to ...?" +
+                "\n  1) Add to cart" +
+                "\n  2) Add to favorites " +
+                "\n  3) Return to menu please" +
+                "\n\n-> Choose an option: ")
+        when (readLine().toString()) {
+            "1" -> addToCart(product)
+            "2" -> {
+                println("hola")
+                /*if(!userType){
+                    addToFavorite(product)
+                } else {
+                    println("You don't have access to this part, please sign in or log in")
+                }*/
             }
         }
     }
@@ -120,6 +143,19 @@ open class User (open val idUser: String) {
             }
         }
     }
+
+    fun addToFavorite(product: Product) {
+        println("The product ${product.getName()} has been added to your favorite list")
+        this.favorites.add(product)
+    }
+
+    /*
+    fun getFavorite(product: Product) {
+        println("Favoritos: ${product.getName()} has been added to your favorite list")
+        this.favorites.add(product)
+    }
+     */
 }
 
 //Checar la parte mostrar un producto y su menu de opciones
+
