@@ -50,7 +50,7 @@ class BaseDatos {
 
         fun setUsers() {
             myStore.addUser(RegisteredUser(idUser++.toString(), "tomas11", "tomas@hotmail.com", "123"))
-            myStore.addUser(RegisteredUser(idUser++.toString(), "didier32", "didier@hotmail.com", "123"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "didier32", "didier@hotmail.com", "1234"))
             myStore.addUser(RegisteredUser(idUser++.toString(), "josearm21", "josearmando@outlook.es", "123"))
             myStore.addUser(RegisteredUser(idUser++.toString(), "maribel07", "maribel@live.com", "123"))
         }

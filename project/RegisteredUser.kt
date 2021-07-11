@@ -1,49 +1,77 @@
 package project;
 
-class RegisteredUser(
-        idUser: String,
-        name: String,
-        email: String,
-        password: String): GuestUser(idUser){
+import kotlin.collections.List as List1
 
-        @JvmName("getName1")
+class RegisteredUser(
+        override val idUser: String,
+        private val name: String,
+        private val email: String,
+        private var password: String): User(idUser){
+
         fun getName(): String {
                 return this.name
         }
 
-        /*override val email: String
-                get() {
-                        return this.email
-                }
+        fun getEmail(): String {
+                return this.email
+        }
 
         fun getPassword(): String {
                 return this.password
-        }*/
-
-        private fun addToCart(product: Product) {
-                println("The product ${product.getName()} has been added to your cart")
-                this.shoppingCart.add(product)
         }
 
-        fun removeFromCart(product: Product) {
-                println("The product ${product.getName()} has been removed to your cart")
-                this.shoppingCart.remove(product)
-        }
+        fun logIn(store: Store) : Boolean {
+                print("\n---------- MODA Store | LOG IN ----------\nUsername: ")
+                var name = readLine().toString()
 
-        fun makePurchase() {
-                println("---------- Purchase ----------")
-                var total = 0F
-                shoppingCart.forEach() {
-                        println(" - ${it.getName()}\t $ ${it.getPrice()}")
-                        total += it.getPrice()
+                while (store.getUser(name) == null) {
+                        print("Sorry the username ${name} is not registered. Try with another one: ")
+                        name = readLine().toString()
                 }
-                var iva = total * 0.16F
-                println("Subtotal: $ ${total}\nIVA: ${iva}\nTotal a pagar: ${total + iva}")
+
+                val regUser = store.getUser(name)
+                print("Password: ")
+                var password : String = readLine().toString()
+
+                if (regUser != null) {
+                        while (regUser.getPassword() != password) {
+                                print("Incorrect password: ")
+                                password = readLine().toString()
+                        }
+                        println("Welcome again $name to MODA Store")
+                } else {
+                        println("Sorry couldn't find an account with the username ${name}")
+                }
+
+                //println("Welcome again $name to MODA Store")
+                return false
         }
 
-        fun makeRefund(idRefund: String) {
-                this.devolutions.add(idRefund)
+        fun logOut() : Boolean {
+                print("\n---------- MODA Store | LOG OUT ----------")
+                return true
         }
+
+
+/*
+fun perfil(){
+        println("Bienvenido a tu perfil")
+        println("Nombre: ${getName()}")
+        println("Email: ${getEmail()}")
+    }
+fun addToFavorites(){
+}
+fun removeFromFavorites(){
+}
+fun changeSetting(){
+}
+fun setPassword(){
+}
+fun setAddress(){
+}
+fun setPaymentMethod(){
+}
+ */
 }
 
 
