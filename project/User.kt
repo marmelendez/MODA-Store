@@ -58,7 +58,7 @@ open class User (open val idUser: String) {
         return true
     }
 
-    fun searchProduct(store: Store) {
+    fun searchProduct(store: Store, user: RegisteredUser? = null) {
         var flag = true
         var option: String
         while (flag) {
@@ -85,7 +85,7 @@ open class User (open val idUser: String) {
                 var id = readLine().toString()
                 var selectedProduct = store.catalogProduct.filter { id == it.getIdProduct().toString() }
                 try {
-                    selectProduct(selectedProduct[0])
+                    selectProduct(selectedProduct[0], user)
                 } catch (e: Exception) {
                     println("Sorry, couldn't find a product with the ${id} id :(")
                 }
@@ -93,11 +93,11 @@ open class User (open val idUser: String) {
         }
     }
 
-    fun selectProduct(product: Product) {
-        println("\n---------- MODA Store | ${product.getName()} ----------" +
-                "\nID: ${product.getIdProduct()}" +
-                "\nPrice: ${product.getPrice()}" +
-                "\nColor: ${product.getColor()}" +
+    fun selectProduct(product: Product, user: RegisteredUser?) {
+        println("\n---------- MODA Store | ${product.name} ----------" +
+                "\nID: ${product.idProduct}" +
+                "\nPrice: ${product.price}" +
+                "\nColor: ${product.color}" +
                 "\nCategory: ${product.getCategory().getName()}" +
                 "\nSize: ${product.getQuantity().map { it.key }}"
         )
@@ -108,15 +108,13 @@ open class User (open val idUser: String) {
                     "\n  3) Return to menu please" +
                     "\n\n-> Choose an option: "
         )
-        when (readLine().toString()) {
-            "1" -> println("")//addToCart(product)
-            "2" -> {
-                println("hola")
-                /*if(!userType){
-                    addToFavorite(product)
-                } else {
-                    println("You don't have access to this part, please sign in or log in")
-                }*/
+        var op = readLine().toString()
+        if (op == "1" || op == "2") {
+            if(user != null){
+                user.addToFavorite(product)
+                println("The product ${product.name} has been added to your cart")
+            } else {
+                println("You don't have access to this part, please sign in or log in")
             }
         }
     }

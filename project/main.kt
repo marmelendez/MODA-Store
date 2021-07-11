@@ -34,8 +34,10 @@ fun displayMenu() {
         print ("----------WELCOME TO ${myStore.name}----------" +
                 "\n1) Search product" +
                 "\n2) Profile" +
-                "\n3) Log out" +
-                "\n4) Exit" +
+                "\n3) Check favorites" +
+                "\n4) Check shopping cart" +
+                "\n5) Check orders" +
+                "\n6) Log out" +
                 "\n\n-> Choose an option: ")
         opcion = readLine().toString()
         flag = registeredUserMenu(opcion)
@@ -67,13 +69,16 @@ fun userMenu(option: String): Boolean {
 
 fun registeredUserMenu(option: String): Boolean {
     when (option) {
-        "1" -> myRegisteredUser.searchProduct(myStore)
+        "1" -> myRegisteredUser.searchProduct(myStore, myRegisteredUser)
         "2" -> myRegisteredUser.profile(myStore, myRegisteredUser)
-        "3" -> {
+        "3" -> println()
+        "4" -> println()
+        "5" -> println()
+        "6" -> {
             generalUser = myRegisteredUser.logOut()
             displayMenu()
         }
-        "4" -> {
+        "7" -> {
             println("Thanks to be with us")
             return false
         }
@@ -86,7 +91,7 @@ fun registeredUserMenu(option: String): Boolean {
 }
 
 fun clear() {
-    for (i in 0..20) {
+    for (i in 0..10) {
         println()
     }
 }
