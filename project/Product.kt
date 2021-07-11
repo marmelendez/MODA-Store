@@ -1,17 +1,22 @@
 package project
 
-class Product(
+data class Product(
     val idProduct: Int,
     var name: String,
     var category: Category,
     var color: String,
-    var size: String,
     var price: Float,
-    var quantity: Int
+    var quantity: Map<String,Int>,
 ) {
     var status = false
+
     init{
-        if (this.quantity!! > 0){this.status = true}
+
+    }
+
+    @JvmName("getIdProduct1")
+    fun getIdProduct(): Int {
+        return this.idProduct
     }
 
     @JvmName("getName1")
@@ -19,8 +24,23 @@ class Product(
         return this.name.toString()
     }
 
+    @JvmName("getCategory1")
+    fun getCategory(): Category {
+        return this.category
+    }
+
     @JvmName("getPrice1")
     fun getPrice(): Float{
         return this.price.toFloat()
+    }
+
+    @JvmName("getColor1")
+    fun getColor(): String {
+        return this.color
+    }
+
+    @JvmName("getQuantity1")
+    fun getQuantity(): Map<String, Int> {
+        return this.quantity
     }
 }
