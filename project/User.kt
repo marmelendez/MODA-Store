@@ -7,7 +7,7 @@ open class User (open val idUser: String){
     private var shoppingCart = mutableListOf<Product>()
     private var orders = mutableListOf<String>()
     private var devolutions = mutableListOf<String>()
-    //private var favorites = mutableListOf<Product>()
+    private var favorites = mutableListOf<Product>()
 
 
     @JvmName("getAddress1")
@@ -86,7 +86,7 @@ open class User (open val idUser: String){
         return true
     }
 
-    fun searchProduct(store: Store) {
+    fun searchProduct(store: Store, userType: Boolean) {
         var flag = true
         var option: String
         while (flag){
@@ -111,7 +111,7 @@ open class User (open val idUser: String){
                 var id = readLine().toString()
                 var selectedProduct = store.catalogProduct.filter { id == it.getIdProduct().toString() }
                 try {
-                    selectProduct(selectedProduct[0])
+                    selectProduct(selectedProduct[0], userType)
                 } catch(e: Exception) {
                     println("Sorry, couldn't find a product with the ${id} id :(")
                 }
@@ -119,7 +119,7 @@ open class User (open val idUser: String){
         }
     }
 
-    fun selectProduct(product: Product) {
+    fun selectProduct(product: Product, userType: Boolean) {
         println("\n---------- MODA Store | ${product.getName()} ----------" +
                 "\nID: ${product.getIdProduct()}" +
                 "\nPrice: ${product.getPrice()}" +
@@ -134,11 +134,11 @@ open class User (open val idUser: String){
         when (readLine().toString()) {
             "1" -> addToCart(product)
             "2" -> {
-                println("agregado a listan de favoritos")
-                /*
-                verifyAccount()
-                addToFavorite(product)
-                 */
+                if(!userType){
+                    addToFavorite(product)
+                } else {
+                    println("You don't have access to this part, please sign in or log in")
+                }
             }
         }
     }
@@ -168,15 +168,14 @@ open class User (open val idUser: String){
         this.devolutions.add(idRefund)
     }
 
-    //implementar funcion de si el usuario esta registrado
-
-    /*
-    fun verifyAccount(){
-        getName()
-    }
-
     fun addToFavorite(product: Product) {
         println("The product ${product.getName()} has been added to your favorite list")
+        this.favorites.add(product)
+    }
+
+    /*
+    fun getFavorite(product: Product) {
+        println("Favoritos: ${product.getName()} has been added to your favorite list")
         this.favorites.add(product)
     }
      */

@@ -42,7 +42,7 @@ fun displayMenu() {
 
 fun userMenu(option: String): Boolean {
     when (option) {
-        "1" -> myUser.searchProduct(myStore)
+        "1" -> myUser.searchProduct(myStore,generalUser)
         "2" -> generalUser = myUser.signIn(myStore)
         "3" -> generalUser = myRegisteredUser.logIn(myStore)
         "4" -> {
@@ -59,8 +59,8 @@ fun userMenu(option: String): Boolean {
 
 fun registeredUserMenu(option: String): Boolean {
     when (option) {
-        "1" -> myRegisteredUser.searchProduct(myStore)
-        "2" -> println("perfil")
+        "1" -> myRegisteredUser.searchProduct(myStore,generalUser)
+        "2" -> println("Mi perfil")//myRegisteredUser.perfil()
         "3" -> {
             generalUser = myRegisteredUser.logOut()
             displayMenu()

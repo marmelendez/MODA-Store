@@ -49,7 +49,15 @@ class RegisteredUser(
         return true
     }
 
+
 /*
+
+fun perfil(){
+        println("Bienvenido a tu perfil")
+        println("Nombre: ${getName()}")
+        println("Email: ${getEmail()}")
+    }
+
 fun addToFavorites(){
 
 }
