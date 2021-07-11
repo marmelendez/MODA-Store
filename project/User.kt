@@ -111,8 +111,10 @@ open class User (open val idUser: String) {
         var op = readLine().toString()
         if (op == "1" || op == "2") {
             if(user != null){
-                user.addToFavorite(product)
-                println("The product ${product.name} has been added to your cart")
+                when (op){
+                    "1" -> user.addToCart(product)
+                    "2" -> user.addToFavorite(product)
+                }
             } else {
                 println("You don't have access to this part, please sign in or log in")
             }

@@ -1,6 +1,6 @@
 package project;
 
-import kotlin.collections.List as List1
+import kotlin.collections.List
 
 class RegisteredUser(
         override val idUser: String,
@@ -10,7 +10,6 @@ class RegisteredUser(
 
         private var shoppingCart = mutableListOf<Product>()
         private var orders = mutableListOf<String>()
-        private var devolutions = mutableListOf<String>()
         private var favorites = mutableListOf<Product>()
         private var address = ""
 
@@ -20,32 +19,32 @@ class RegisteredUser(
                 return this.address
         }
 
-        @JvmName("getShoppingCart1")
-        private fun getShoppingCart(): List1<Product> {
-                return this.shoppingCart
-        }
-
-        @JvmName("getOrders1")
-        fun getOrders(): List1<String> {
-                return this.orders
-        }
-
-        @JvmName("getDevolutions1")
-        fun getDevolutions(): List1<String> {
-                return this.devolutions
-        }
-
-
         @JvmName("setAddress1")
         private fun setAddress(address: String) {
                 this.address = address
         }
 
-        fun displayShoppingCart() {
-                println("---------- Shopping Cart ----------")
-                getShoppingCart().forEach() {
-                        println(it.getName())
+        fun getFavorites(): MutableList<Product> {
+                return this.favorites
+        }
+
+        fun getShoppingCart(): MutableList<Product> {
+                return this.shoppingCart
+        }
+
+        fun display(list: MutableList<Product>, text: String) {
+                println("---------- MODA Store | ${text}----------")
+                println("\tID \tProduct name \tPrice")
+                list.forEach() {
+                        println("\t${it.getIdProduct()} \t${it.getName()} \t${it.getPrice()}")
                 }
+        }
+
+        fun displayOrders() {
+                println("---------- MODA Store | ORDERS ----------")
+                /* this.favorites.forEach() {
+                        println(it.getName())
+                }*/
         }
 
         fun getName(): String {
@@ -122,10 +121,6 @@ class RegisteredUser(
                 }
                 var iva = total * 0.16F
                 println("Subtotal: $ ${total}\nIVA: ${iva}\nTotal a pagar: ${total + iva}")
-        }
-
-        fun makeRefund(idRefund: String) {
-                this.devolutions.add(idRefund)
         }
 
         fun addToFavorite(product: Product) {
