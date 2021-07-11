@@ -5,8 +5,9 @@ import project.RegisteredUser
 
 val myStore: Store = BaseDatos.iniciar()
 val myUser = User("1000")
-val myRegisteredUser = RegisteredUser("","","","")
+var myRegisteredUser = RegisteredUser("","","","")
 var generalUser = true
+
 
 fun main() {
     displayMenu()
@@ -27,6 +28,7 @@ fun displayMenu() {
         opcion = readLine().toString()
         flag = userMenu(opcion)
     }
+
     while (flag && !generalUser) {
         clear()
         print ("----------WELCOME TO ${myStore.name}----------" +
@@ -43,8 +45,14 @@ fun displayMenu() {
 fun userMenu(option: String): Boolean {
     when (option) {
         "1" -> myUser.searchProduct(myStore)
-        "2" -> generalUser = myUser.signIn(myStore)
-        "3" -> generalUser = myRegisteredUser.logIn(myStore)
+        "2" -> {
+            myRegisteredUser = myUser.signIn(myStore)!!
+            generalUser = false
+        }
+        "3" -> {
+            myRegisteredUser = myRegisteredUser.logIn(myStore)!!
+            generalUser = false
+        }
         "4" -> {
             println("Thanks to be with us")
             return false
@@ -60,7 +68,7 @@ fun userMenu(option: String): Boolean {
 fun registeredUserMenu(option: String): Boolean {
     when (option) {
         "1" -> myRegisteredUser.searchProduct(myStore)
-        "2" -> println("Mi perfil")//myRegisteredUser.perfil()
+        "2" -> myRegisteredUser.profile(myStore, myRegisteredUser)
         "3" -> {
             generalUser = myRegisteredUser.logOut()
             displayMenu()
