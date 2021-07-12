@@ -80,44 +80,43 @@ open class User (open val idUser: String) {
             )
             option = readLine().toString()
             if (option != "1") flag = false
-            if (option == "2") {
-                print("   -> Please enter the product ID: ")
-                var id = readLine().toString()
-                var selectedProduct = store.catalogProduct.filter { id == it.getIdProduct().toString() }
-                try {
-                    selectProduct(selectedProduct[0], user)
-                } catch (e: Exception) {
-                    println("Sorry, couldn't find a product with the ${id} id :(")
-                }
-            }
+            if (option == "2") selectProduct(store, user)
         }
     }
 
-    fun selectProduct(product: Product, user: RegisteredUser?) {
-        println("\n---------- MODA Store | ${product.name} ----------" +
-                "\nID: ${product.idProduct}" +
-                "\nPrice: ${product.price}" +
-                "\nColor: ${product.color}" +
-                "\nCategory: ${product.getCategory().getName()}" +
-                "\nSize: ${product.getQuantity().map { it.key }}"
-        )
-        print(
-            "\nDo you want to ...?" +
-                    "\n  1) Add to cart" +
-                    "\n  2) Add to favorites " +
-                    "\n  3) Return to menu please" +
-                    "\n\n-> Choose an option: "
-        )
-        var op = readLine().toString()
-        if (op == "1" || op == "2") {
-            if(user != null){
-                when (op){
-                    "1" -> user.addToCart(product)
-                    "2" -> user.addToFavorite(product)
+    fun selectProduct(store: Store, user: RegisteredUser?) {
+        print("   -> Please enter the product ID: ")
+        var id = readLine().toString()
+        var selectedProduct = store.catalogProduct.filter { id == it.getIdProduct().toString() }
+        val product = selectedProduct[0]
+        try {
+            println("\n---------- MODA Store | ${product.name} ----------" +
+                    "\nID: ${product.idProduct}" +
+                    "\nPrice: ${product.price}" +
+                    "\nColor: ${product.color}" +
+                    "\nCategory: ${product.getCategory().getName()}" +
+                    "\nSize: ${product.getQuantity().map { it.key }}"
+            )
+            print(
+                "\nDo you want to ...?" +
+                        "\n  1) Add to cart" +
+                        "\n  2) Add to favorites " +
+                        "\n  3) Return to menu please" +
+                        "\n\n-> Choose an option: "
+            )
+            var op = readLine().toString()
+            if (op == "1" || op == "2") {
+                if(user != null){
+                    when (op){
+                        "1" -> user.addToCart(product)
+                        "2" -> user.addToFavorite(product)
+                    }
+                } else {
+                    println("You don't have access to this part, please sign in or log in")
                 }
-            } else {
-                println("You don't have access to this part, please sign in or log in")
             }
+        } catch (e: Exception) {
+            println("Sorry, couldn't find a product with the ${id} id :(")
         }
     }
 }

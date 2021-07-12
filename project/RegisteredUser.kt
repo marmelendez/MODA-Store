@@ -13,6 +13,17 @@ class RegisteredUser(
         private var favorites = mutableListOf<Product>()
         private var address = ""
 
+        fun getName(): String {
+                return this.name
+        }
+
+        fun getEmail(): String {
+                return this.email
+        }
+
+        fun getPassword(): String {
+                return this.password
+        }
 
         @JvmName("getAddress1")
         fun getAddress(): String {
@@ -32,12 +43,62 @@ class RegisteredUser(
                 return this.shoppingCart
         }
 
-        fun display(list: MutableList<Product>, text: String) {
-                println("---------- MODA Store | ${text}----------")
+        fun displayFavorites(store: Store) {
+                println("---------- MODA Store | FAVORITES----------")
                 println("\tID \tProduct name \tPrice")
-                list.forEach() {
+                this.favorites.forEach() {
                         println("\t${it.getIdProduct()} \t${it.getName()} \t${it.getPrice()}")
                 }
+                print(
+                        "\nDo you want to ...?" +
+                                "\n  1) Add product to cart" +
+                                "\n  2) Remove a product" +
+                                "\n  3) Return to menu please" +
+                                "\n\n-> Choose an option: ")
+                when (readLine().toString()) {
+                        "1" -> addProductToCart()
+                        "2" -> removeProductFromFavorites()
+                }
+        }
+
+        private fun addProductToCart() {
+                val product = findProduct(this.favorites, "favorites")
+                if (product != null) {
+                        addToCart(product)
+                }
+        }
+
+        private fun removeProductFromFavorites() {
+                val product = findProduct(this.favorites, "favorites")
+                if (product != null) {
+                        removeFromFavorites(product)
+                }
+        }
+
+        private fun findProduct(list: MutableList<Product>, text: String): Product? {
+                print("   -> Please enter the product ID: ")
+                var id = readLine().toString()
+                var selectedProduct = list.filter { id == it.getIdProduct().toString() }
+                try {
+                        return selectedProduct[0]
+                } catch (e: Exception) {
+                        println("Sorry, couldn't find a product with the ${id} id in your ${text} :(")
+                        return null
+                }
+        }
+
+        fun displayShoppingCart() {
+                println("---------- MODA Store | SHOPPING CART----------")
+                println("\tID \tProduct name \tPrice")
+                this.shoppingCart.forEach() {
+                        println("\t${it.getIdProduct()} \t${it.getName()} \t${it.getPrice()}")
+                }
+                print(
+                        "\nDo you want to ...?" +
+                                "\n  1) Proceed to payment" +
+                                "\n  2) Remove a product" +
+                                "\n  3) Return to menu please" +
+                                "\n\n-> Choose an option: ")
         }
 
         fun displayOrders() {
@@ -45,18 +106,6 @@ class RegisteredUser(
                 /* this.favorites.forEach() {
                         println(it.getName())
                 }*/
-        }
-
-        fun getName(): String {
-                return this.name
-        }
-
-        fun getEmail(): String {
-                return this.email
-        }
-
-        fun getPassword(): String {
-                return this.password
         }
 
         fun logIn(store: Store) : RegisteredUser? { //Boolean
@@ -110,6 +159,11 @@ class RegisteredUser(
         fun removeFromCart(product: Product) {
                 println("The product ${product.getName()} has been removed to your cart")
                 this.shoppingCart.remove(product)
+        }
+
+        fun removeFromFavorites(product: Product) {
+                println("The product ${product.getName()} has been removed to your cart")
+                this.favorites.remove(product)
         }
 
         fun makePurchase() {
