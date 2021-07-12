@@ -1,17 +1,18 @@
-package Proyecto
+package project
 
-class Order (val idOrder: Int,
+class Order (var idOrder: Int,
              var total: Float,
              var addres: String,
-             val orderDate: String) {
+             var orderDate: String) {
 
     init {
-        println(""" Gracias Por su compra. 
-                Orden detallada:
-                Orden Numero: $idOrder
-                Total a Pagar: $total
-                Direccion: $addres
-                Fecha: $orderDate
+        println(""" Thanks for your purchase. 
+                Detailed order:
+                Order number: $idOrder
+                Total Paid: $total
+                Address: $addres
+                Date: $orderDate
                 """)
     }
+
 }

@@ -1,7 +1,7 @@
 package project
 
-class Category (val idCategory: Int,
-                var name: String) {
+data class Category (val idCategory: Int,
+                     var name: String) {
     var products = mutableListOf<String>()
 
     @JvmName("getName1")
