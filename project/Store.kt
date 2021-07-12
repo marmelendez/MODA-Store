@@ -30,4 +30,13 @@ class Store (override val name: String): StoreInterface {
     fun isInListOfUsersPassword(password: String): Boolean {
         return this.listOfUsers.none { it.getPassword().toLowerCase().contains(password.toLowerCase()) }
     }
+
+    fun getUser(username: String): RegisteredUser? {
+        var posibleUser = this.listOfUsers.filter{ it.getName() == username }
+        try {
+            return posibleUser[0]
+        } catch(e: Exception) {
+            return null
+        }
+    }
 }

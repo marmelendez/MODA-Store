@@ -1,6 +1,6 @@
 package project
 
-class Category (val idCategory: Int,
+data class Category (val idCategory: Int,
                 var name: String) {
     var products = mutableListOf<String>()
 

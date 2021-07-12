@@ -3,84 +3,255 @@ package project;
 import kotlin.collections.List as List1
 
 class RegisteredUser(
-    override val idUser: String,
-    private val name: String,
-    private val email: String,
-    private var password: String): User(idUser){
+        override val idUser: String,
+        private val name: String,
+        private val email: String,
+        private var password: String,
+        private var address: String,
+        private var payment: String): User(idUser){
 
-    fun getName(): String {
-        return this.name
-    }
+        private var shoppingCart = mutableListOf<Product>()
+        private var orders = mutableListOf<String>()
+        private var devolutions = mutableListOf<String>()
+        private var favorites = mutableListOf<Product>()
+        //private var address = ""
 
-    fun getEmail(): String {
-        return this.email
-    }
-
-    fun getPassword(): String {
-        return this.password
-    }
-
-    fun logIn(store: Store) : Boolean {
-        print("\n---------- MODA Store | LOG IN ----------\nUsername: ")
-        var name = readLine().toString()
-        print("Password: ")
-        var password : String = readLine().toString()
-        while (store.isInListOfUsersUsername(name) || store.isInListOfUsersPassword(password)){
-            println("--- There is a problem in the LogIn")
-            while(store.isInListOfUsersUsername(name)){
-                println("--- This username doesn't exist, enter a valid username: ")
-                name = readLine().toString()
-                if(store.isInListOfUsersUsername(name) == false){
-                    print("Password: ")
-                    password = readLine().toString()
-                }
-            }
-            while(store.isInListOfUsersPassword(password)){
-                println("--- This password doesn't match, enter a valid password: ")
-                password = readLine().toString()
-            }
+        @JvmName("getAddress1")
+        fun getAddress(): String {
+                return this.address
         }
-        println("Welcome again $name to MODA Store")
-        return false
-    }
 
-    fun logOut() : Boolean {
-        print("\n---------- MODA Store | LOG OUT ----------")
-        return true
-    }
+        @JvmName("getShoppingCart1")
+        private fun getShoppingCart(): List1<Product> {
+                return this.shoppingCart
+        }
+
+        @JvmName("getOrders1")
+        fun getOrders(): List1<String> {
+                return this.orders
+        }
+
+        @JvmName("getDevolutions1")
+        fun getDevolutions(): List1<String> {
+                return this.devolutions
+        }
+
+
+        fun displayShoppingCart() {
+                println("---------- Shopping Cart ----------")
+                getShoppingCart().forEach() {
+                        println(it.getName())
+                }
+        }
+
+        fun getName(): String {
+                return this.name
+        }
+
+        fun getEmail(): String {
+                return this.email
+        }
+
+        fun getPassword(): String {
+                return this.password
+        }
+
+        fun logIn(store: Store) : RegisteredUser? { //Boolean
+                print("\n---------- MODA Store | LOG IN ----------\nUsername: ")
+                var name = readLine().toString()
+
+                while (store.getUser(name) == null) {
+                        print("Sorry the username ${name} is not registered. Try with another one: ")
+                        name = readLine().toString()
+                }
+
+                val regUser = store.getUser(name)
+                print("Password: ")
+                var password : String = readLine().toString()
+
+                if (regUser != null) {
+                        while (regUser.getPassword() != password) {
+                                print("Incorrect password: ")
+                                password = readLine().toString()
+                        }
+                        println("Welcome again $name to MODA Store")
+                } else {
+                        println("Sorry couldn't find an account with the username ${name}")
+                }
+
+                //println("Welcome again $name to MODA Store")
+                //return false
+                return regUser
+        }
+
+        fun logOut() : Boolean {
+                print("\n---------- MODA Store | LOG OUT ----------")
+                return true
+        }
+
+        fun profile(user: RegisteredUser){
+                println("---------- MODA Store | PROFILE ----------")
+                println("Welcome again ${user.name} to MODA Store")
+
+                println("\nProfile information" +
+                        "\n\tID: ${user.idUser}" +
+                        "\n\tNombre: ${user.name}" +
+                        "\n\tEmail: ${user.email}")
+
+                var flag = true
+                while(flag){
+                        println("\n\nWhat would you like to do?" +
+                                "\n1) Change settings" +
+                                "\n2) Add information" +
+                                "\n3) Return to menu" +
+                                "\n\n-> Choose an option: ")
+                        var option = readLine().toString()
+                        when (option) {
+                                "1" -> {
+                                        changeSettings(user)
+                                        profile(user)
+                                }
+                                "2" -> {
+                                        addInformation(user)
+                                        profile(user)
+                                }
+                                "3" -> flag = false
+                                else -> {
+                                        println("Sorry, please select a valid option(1-2)\n")
+                                }
+                        }
+                }
+
+
+        }
+
+        fun changeSettings(user: RegisteredUser){
+                var flag = true
+                while(flag){
+                        println("What would you like to change?" +
+                                "\n1) Name" +
+                                "\n2) Email" +
+                                "\n3) Password" +
+                                "\n4) Address" +
+                                "\n5) Payment Method" +
+                                "\n6) Return to profile" +
+                                "\n\n-> Choose an option: ")
+                        var option = readLine().toString()
+                        when (option) {
+                                "1" -> println("Name modified")
+                                "2" -> println("Email modified")
+                                "3" -> println("Password modified")
+                                "4" -> println("Address modified")
+                                "5" -> println("Payment method modified")
+                                "6" -> flag = false
+                                else -> {
+                                        println("Sorry, please select a valid option(1-6)\n")
+                                }
+                        }
+                }
+        }
+
+        fun addInformation(user: RegisteredUser){
+                var flag = true
+                while(flag){
+                        println("What type of information would you like to add?" +
+                                "\n1) Add address" +
+                                "\n2) Add payment method" +
+                                "\n3) Return to profile" +
+                                "\n\n-> Choose an option: ")
+                        var option = readLine().toString()
+                        when (option) {
+                                "1" -> setAddress(user)
+                                "2" -> setPaymentMethod(user)
+                                "3" -> flag = false
+                                else -> {
+                                        println("Sorry, please select a valid option(1-3)\n")
+                                }
+                        }
+                }
+        }
+
+        fun setPaymentMethod(user: RegisteredUser){
+                println("\nLast payment method: ${user.payment}")
+                println("Set your payment method: ")
+                user.payment = readLine().toString()
+                println("\nPayment method updated: ${user.payment}\n\n")
+        }
+
+        fun setAddress(user: RegisteredUser){
+                println("\nLast address: ${user.address}")
+                println("Set your address: ")
+                user.address = readLine().toString()
+                println("\nAddress updated: ${user.address}\n\n")
+        }
+
+        /*
+        fun setPassword(){
+
+        }
+
+        fun setAddress(){
+        }
+
+
+        @JvmName("setAddress1")
+        private fun setAddress(address: String) {
+                this.address = address
+        }
+         */
+
+
+
+
+        /*
+        fun addToCart(product: Product) {
+                println("The product ${product.getName()} has been added to your cart")
+                this.shoppingCart.add(product)
+        }
+        */
+
+        fun removeFromCart(product: Product) {
+                println("The product ${product.getName()} has been removed to your cart")
+                this.shoppingCart.remove(product)
+        }
+
+        fun makePurchase() {
+                println("---------- Purchase ----------")
+                var total = 0F
+                shoppingCart.forEach() {
+                        println(" - ${it.getName()}\t $ ${it.getPrice()}")
+                        total += it.getPrice()
+                }
+                var iva = total * 0.16F
+                println("Subtotal: $ ${total}\nIVA: ${iva}\nTotal a pagar: ${total + iva}")
+        }
+
+        fun makeRefund(idRefund: String) {
+                this.devolutions.add(idRefund)
+        }
+
+        fun addToFavorite(product: Product) {
+                println("The product ${product.getName()} has been added to your favorite list")
+                this.favorites.add(product)
+        }
+
+
+
+}
+
+/*
+Registered User
+- profile: configuracion
+- compras: id, carrito, total, fecha
+- agregar a carrito
+ */
 
 
 /*
 
-fun perfil(){
-        println("Bienvenido a tu perfil")
-        println("Nombre: ${getName()}")
-        println("Email: ${getEmail()}")
-    }
-
 fun addToFavorites(){
-
 }
-
 fun removeFromFavorites(){
-
-
 }
 
-fun changeSetting(){
-
-}
-
-fun setPassword(){
-
-}
-
-fun setAddress(){
-
-}
-
-fun setPaymentMethod(){
-
-}
  */
-}
