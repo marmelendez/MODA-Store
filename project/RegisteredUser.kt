@@ -165,7 +165,7 @@ class RegisteredUser(
                 "2" -> { println("Enter a new Email")
                     var email= readLine()?.toString()
                     while (email == null ){
-                        println("Please enter a new name")
+                        println("Please enter a new Email")
                         email = readLine()?.toString()
                     }
                     setEmail(email)
@@ -174,7 +174,7 @@ class RegisteredUser(
                 "3" -> { println("Enter a new Password")
                     var password= readLine()?.toString()
                     while (password == null ){
-                        println("Please enter a new name")
+                        println("Please enter a new Password")
                         password = readLine()?.toString()
                     }
                     setPassword(password)
