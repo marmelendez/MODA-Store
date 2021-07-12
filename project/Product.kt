@@ -1,4 +1,5 @@
-package project
+package project/*El constructor nos permite inicializar algunas propiedades, que queremos que sean
+por defecto */
 
 data class Product(
     val idProduct: Int,

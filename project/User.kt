@@ -4,6 +4,8 @@ import kotlin.collections.List as List1
 
 open class User (open val idUser: String) {
 
+    private var shoppingCart = mutableListOf<Product>()
+
     fun signIn(store: Store): RegisteredUser {
         //validar que no esten ya registrados y que sean validos
         print("---------- MODA Store | SIGN IN ----------\n\n-> Please enter your username: ")
@@ -41,7 +43,7 @@ open class User (open val idUser: String) {
         }
 
         //crear usuario registrado
-        val newUser = RegisteredUser(idUser, name, email, password)
+        val newUser = RegisteredUser(idUser, name, email, password,"","")
         store.addUser(newUser)
 
         //Agregar corutina
@@ -55,11 +57,13 @@ open class User (open val idUser: String) {
             print(error)
             return false
         }
+        return true
+    }
 
     fun searchProduct(store: Store) {
         var flag = true
         var option: String
-        while (flag){
+        while (flag) {
             print("\n---------- MODA Store | SEARCH ----------\nHi there, which product are you looking for? ")
 
             var productName = readLine().toString()
@@ -69,13 +73,11 @@ open class User (open val idUser: String) {
             println("${text}\n\tID \tName")
             result.forEach { println("\t${it.getIdProduct()} \t${it.getName()}") }
 
-            print(
-                "\nDo you want to ...?" +
-                        "\n  1) Search another product" +
-                        "\n  2) Select a product " +
-                        "\n  3) Return to menu please" +
-                        "\n\n-> Choose an option: "
-            )
+            print("\nDo you want to ...?" +
+                    "\n  1) Search another product" +
+                    "\n  2) Select a product " +
+                    "\n  3) Return to menu please" +
+                    "\n\n-> Choose an option: ")
             option = readLine().toString()
             if (option != "1") flag = false
             if (option == "2") {
@@ -84,7 +86,7 @@ open class User (open val idUser: String) {
                 var selectedProduct = store.catalogProduct.filter { id == it.getIdProduct().toString() }
                 try {
                     selectProduct(selectedProduct[0])
-                } catch(e: Exception) {
+                } catch (e: Exception) {
                     println("Sorry, couldn't find a product with the ${id} id :(")
                 }
             }
@@ -108,7 +110,7 @@ open class User (open val idUser: String) {
             "2" -> {
                 println("hola")
                 /*if(!userType){
-                    addToFavorite(product)
+                addToFavorite(product)
                 } else {
                     println("You don't have access to this part, please sign in or log in")
                 }*/
@@ -116,46 +118,26 @@ open class User (open val idUser: String) {
         }
     }
 
-    fun selectProduct(product: Product) {
-        println("\n---------- MODA Store | ${product.getName()} ----------" +
-                "\nID: ${product.getIdProduct()}" +
-                "\nPrice: ${product.getPrice()}" +
-                "\nColor: ${product.getColor()}" +
-                "\nCategory: ${product.getCategory().getName()}" +
-                "\nSize: ${product.getQuantity().map { it.key }}"
-        )
-        print(
-            "\nDo you want to ...?" +
-                    "\n  1) Add to cart" +
-                    "\n  2) Add to favorites " +
-                    "\n  3) Return to menu please" +
-                    "\n\n-> Choose an option: "
-        )
-        when (readLine().toString()) {
-            "1" -> println("")//addToCart(product)
-            "2" -> {
-                println("hola")
-                /*if(!userType){
-                    addToFavorite(product)
-                } else {
-                    println("You don't have access to this part, please sign in or log in")
-                }*/
-            }
-        }
+    fun addToCart(product: Product) {
+        println("The product ${product.getName()} has been added to your cart")
+        this.shoppingCart.add(product)
     }
 
+    /*
     fun addToFavorite(product: Product) {
         println("The product ${product.getName()} has been added to your favorite list")
         this.favorites.add(product)
     }
+     */
+
 
     /*
     fun getFavorite(product: Product) {
         println("Favoritos: ${product.getName()} has been added to your favorite list")
         this.favorites.add(product)
     }
-     */
+    */
+
 }
 
 //Checar la parte mostrar un producto y su menu de opciones
-

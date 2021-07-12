@@ -1,5 +1,9 @@
 package project
 
+import project.Product
+import project.RegisteredUser
+
+
 interface StoreInterface {
     val name: String
     val catalogProduct: MutableList<Product>

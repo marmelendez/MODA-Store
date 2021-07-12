@@ -2,7 +2,7 @@ package project
 
 class BaseDatos {
     companion object Base {
-        val myStore = Store("MODA Store")
+        val myStore = Store("MODA project.Store")
 
         var idProduct = 1
         var idUser = 1
@@ -49,15 +49,15 @@ class BaseDatos {
 
 
         fun setUsers() {
-            myStore.addUser(RegisteredUser(idUser++.toString(), "tomas11", "tomas@hotmail.com", "123"))
-            myStore.addUser(RegisteredUser(idUser++.toString(), "didier32", "didier@hotmail.com", "1234"))
-            myStore.addUser(RegisteredUser(idUser++.toString(), "josearm21", "josearmando@outlook.es", "123"))
-            myStore.addUser(RegisteredUser(idUser++.toString(), "maribel07", "maribel@live.com", "123"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "tomas11", "tomas@hotmail.com", "123","Mexico City","Credit Card"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "didier32", "didier@hotmail.com", "1234","Cancun","Credit Card"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "josearm21", "josearmando@outlook.es", "123","Mexico City","Credit Card"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "maribel07", "maribel@live.com", "123","Durango","Credit Card"))
         }
     }
 
 
-    /*fun setShoppingCart(listProducts : MutableList<Product>): MutableList<Product>{
+    /*fun setShoppingCart(listProducts : MutableList<project.Product>): MutableList<project.Product>{
         shoppingCart.add(listProducts[0])
         shoppingCart.add(listProducts[1])
         return shoppingCart
