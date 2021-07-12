@@ -8,6 +8,4 @@ data class Order(
     val total: Float,
     val address: String,
     val pay: MutableMap<String,Map<String, String>>,
-    val date: LocalDateTime
-) {
-}
+    val date: LocalDateTime)

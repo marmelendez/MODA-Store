@@ -1,27 +1,26 @@
 package project;
 
-
 import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Form {
-    private static SecureRandom random = new SecureRandom();
+    private static final SecureRandom random = new SecureRandom();
     private static final String DICTIONARY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._/";
 
     static String passwordGenerator() {
-        String password = "";
+        StringBuilder password = new StringBuilder();
         char dictionaryChar;
         int count = 0;
         while (count < 8) {
             int index = random.nextInt(DICTIONARY.length());
             dictionaryChar = DICTIONARY.charAt(index);
-            if (!password.contains(String.valueOf(dictionaryChar))){
-                password += dictionaryChar;
+            if (!password.toString().contains(String.valueOf(dictionaryChar))){
+                password.append(dictionaryChar);
                 count ++;
             }
         }
-        return password;
+        return password.toString();
     }
 
     static boolean validateUsername(String username) {

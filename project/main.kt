@@ -1,9 +1,6 @@
-import project.BaseDatos
-import project.Store
-import project.User
-import project.RegisteredUser
+package project
 
-val myStore: Store = BaseDatos.iniciar()
+val myStore: Store = BaseDatos.start()
 val myUser = User("1000")
 var myRegisteredUser = RegisteredUser("","","","")
 var generalUser = true
@@ -15,7 +12,7 @@ fun main() {
 
 fun displayMenu() {
     var flag = true
-    var opcion = ""
+    var option: String
 
     // Mientras el usuario no este registrado, muestra el siguiente menu
     while (flag && generalUser) {
@@ -26,8 +23,8 @@ fun displayMenu() {
                 "\n3) Log in" +
                 "\n4) Exit" +
                 "\n\n-> Choose an option: ")
-        opcion = readLine().toString()
-        flag = userMenu(opcion)
+        option = readLine().toString()
+        flag = userMenu(option)
     }
 
     // Mientras el usuario este registrado, muestra el siguiente menu
@@ -41,8 +38,8 @@ fun displayMenu() {
                 "\n5) Check orders" +
                 "\n6) Log out" +
                 "\n\n-> Choose an option: ")
-        opcion = readLine().toString()
-        flag = registeredUserMenu(opcion)
+        option = readLine().toString()
+        flag = registeredUserMenu(option)
     }
 }
 
@@ -51,7 +48,7 @@ fun userMenu(option: String): Boolean {
     when (option) {
         "1" -> myUser.searchProduct(myStore)
         "2" -> {
-            myRegisteredUser = myUser.signIn(myStore)!!
+            myRegisteredUser = myUser.signIn(myStore)
             generalUser = false
         }
         "3" -> {
