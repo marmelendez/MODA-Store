@@ -70,9 +70,9 @@ fun userMenu(option: String): Boolean {
 fun registeredUserMenu(option: String): Boolean {
     when (option) {
         "1" -> myRegisteredUser.searchProduct(myStore, myRegisteredUser)
-        "2" -> myRegisteredUser.profile(myStore, myRegisteredUser)
-        "3" -> myRegisteredUser.displayFavorites(myStore)
-        "4" -> myRegisteredUser.displayShoppingCart()
+        "2" -> myRegisteredUser.profile(myRegisteredUser)
+        "3" -> myRegisteredUser.displayFavorites()
+        "4" -> myRegisteredUser.displayShoppingCart(myStore)
         "5" -> println("orders")
         "6" -> {
             generalUser = myRegisteredUser.logOut()
