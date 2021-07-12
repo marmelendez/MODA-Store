@@ -1,6 +1,7 @@
 package project;
 
-import kotlin.collections.List
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class RegisteredUser(
         override val idUser: String,
@@ -14,7 +15,7 @@ class RegisteredUser(
                         "Debit card" to mapOf())
         private var shoppingCart = mutableListOf<Product>()
         private var favorites = mutableListOf<Product>()
-        private var orders = mutableListOf<String>()
+        private var orders = mutableListOf<Order>()
 
         fun getName(): String {
                 return this.name
@@ -103,76 +104,98 @@ class RegisteredUser(
                 }
         }
 
+        private fun findProduct(list: MutableList<Product>, text: String): Product? {
+                print("   -> Please enter the product ID: ")
+                var id = readLine().toString()
+                var selectedProduct = list.filter { id == it.getIdProduct().toString() }
+                try {
+                        return selectedProduct[0]
+                } catch (e: Exception) {
+                        println("Sorry, couldn't find a product with the id ${id} in your ${text} :(")
+                        return null
+                }
+        }
+
         private fun makePurchase() {
                 println("---------- MODA Store | PAYMENT ----------")
-                var total = 0F
-                shoppingCart.forEach() {
-                        println(" - ${it.getName()}\t $ ${it.getPrice()}")
-                        total += it.getPrice()
-                }
-                var iva = total * 0.16F
-                println("Subtotal: $ ${total}\nIVA: ${iva}\nTotal a pagar: ${total + iva}")
-
-                var res: String
-                if (this.address.isNotEmpty()) {
-                        print("\n! You have the following saved address ${this.address} do you want to use it? y/n: ")
-                        res = readLine().toString()
-                        while (res != "y" && res != "n") {
-                                print("\n--> please enter \"y\" for yes or \"n\" for no: ")
-                                res = readLine().toString()
-                        }
-                        if (res == "n") this.address = ""
-                }
-                while (this.address.isEmpty()) {
-                        println("\n! Please enter your address")
-                        this.address = fillAddressData()
-                }
-
-
-                //checar si tiene un payment method guardado y preguntar si deasea usarlo
-                print("\nSelect your payment method" +
-                        "\n  1) Credit card" +
-                        "\n  2) Debit card" +
-                        "\n-> Choose an option: ")
-                var type = readLine().toString()
-                var flag = true
-
-                while (flag) {
-                        if (type == "1"){
-                                type = "Credit card"
-                                flag = false
-                        } else if (type == "2"){
-                                type = "Debit card"
-                                flag = false
-                        } else{
-                                print("\n--> please enter \"1\" for Credit Card or \"2\" for Debit Card: ")
-                                type = readLine().toString()
-                        }
-                }
-
-                var save = false
-
-                if (paymentMethod.getValue(type).values.isEmpty()) {
-                        println("\n! Please enter your $type data")
-                        save = fillCardData(type)
+                if (shoppingCart.isEmpty()) {
+                        println("Sorry, your cart is empty")
                 } else {
-                        val num = this.paymentMethod[type]?.getValue("Number")
-                        print("\n! You have a $type saved, with the number $num do you want to use it? y/n: ")
-                        if (readLine().toString() == "n"){
-                                println("Then please enter your $type data")
+                        var subtotal = 0F
+                        shoppingCart.forEach() {
+                                println(" - ${it.getName()}\t $ ${it.getPrice()}")
+                                subtotal += it.getPrice()
+                        }
+                        val iva = subtotal * 0.16F
+                        val total = subtotal + iva
+                        println("Subtotal: $ ${subtotal}\nIVA: ${iva}\nTotal a pagar: ${total}")
+
+                        var res: String
+                        if (this.address.isNotEmpty()) {
+                                print("\n! You have the following saved address ${this.address} do you want to use it? y/n: ")
+                                res = readLine().toString()
+                                while (res != "y" && res != "n") {
+                                        print("\n--> please enter \"y\" for yes or \"n\" for no: ")
+                                        res = readLine().toString()
+                                }
+                                if (res == "n") this.address = ""
+                        }
+                        while (this.address.isEmpty()) {
+                                println("\n! Please enter your address")
+                                this.address = fillAddressData()
+                        }
+
+
+                        //checar si tiene un payment method guardado y preguntar si deasea usarlo
+                        print("\nSelect your payment method" +
+                                "\n  1) Credit card" +
+                                "\n  2) Debit card" +
+                                "\n-> Choose an option: ")
+                        var type = readLine().toString()
+                        var flag = true
+
+                        while (flag) {
+                                if (type == "1"){
+                                        type = "Credit card"
+                                        flag = false
+                                } else if (type == "2"){
+                                        type = "Debit card"
+                                        flag = false
+                                } else{
+                                        print("\n--> please enter \"1\" for Credit Card or \"2\" for Debit Card: ")
+                                        type = readLine().toString()
+                                }
+                        }
+
+                        var save = false
+
+                        if (paymentMethod.getValue(type).values.isEmpty()) {
+                                println("\n! Please enter your $type data")
                                 save = fillCardData(type)
                         } else {
-                                println("Okey, let's proceed! :)")
+                                val num = this.paymentMethod[type]?.getValue("Number")
+                                print("\n! You have a $type saved, with the number $num do you want to use it? y/n: ")
+                                res = readLine().toString()
+                                while (res != "y" && res != "n") {
+                                        print("\n--> please enter \"y\" for yes or \"n\" for no: ")
+                                        res = readLine().toString()
+                                }
+                                if (res == "n"){
+                                        println("Then please enter your $type data")
+                                        save = fillCardData(type)
+                                } else {
+                                        println("Okey, let's proceed! :)")
+                                }
                         }
+
+                        addOrder(Order(this.orders.size.toString(), this.shoppingCart,total,this.address, this.paymentMethod, LocalDateTime.now()))
+
+                        if (!save) {
+                                this.paymentMethod[type] = mapOf()
+                        }
+
+                        this.shoppingCart = mutableListOf()
                 }
-
-                //generar compra
-
-                if (!save) {
-                        this.paymentMethod[type] = mapOf()
-                }
-
-                this.shoppingCart = mutableListOf()
         }
 
         private fun fillAddressData(): String {
@@ -195,21 +218,21 @@ class RegisteredUser(
                 print("Number (16): ")
                 var number = readLine().toString()
                 while (number.length < 15) {
-                        print("Enter a valid number, must have 16 digits: ")
+                        println("Enter a valid number, must have 16 digits: ")
                         number = readLine().toString()
                 }
 
                 print("\nDate MM/YY: ")
                 var date = readLine().toString()
                 while (date.length < 4) {
-                        print("Enter a valid date: ")
+                        println("Enter a valid date: ")
                         date = readLine().toString()
                 }
 
                 print("\nSecurity number (3): ")
                 var securityNum = readLine().toString()
                 while (securityNum.length < 2) {
-                        print("Enter a valid security number, must have 3 digits: ")
+                        println("Enter a valid security number, must have 3 digits: ")
                         securityNum = readLine().toString()
                 }
 
@@ -235,23 +258,19 @@ class RegisteredUser(
                 }
         }
 
-        private fun findProduct(list: MutableList<Product>, text: String): Product? {
-                print("   -> Please enter the product ID: ")
-                var id = readLine().toString()
-                var selectedProduct = list.filter { id == it.getIdProduct().toString() }
-                try {
-                        return selectedProduct[0]
-                } catch (e: Exception) {
-                        println("Sorry, couldn't find a product with the id ${id} in your ${text} :(")
-                        return null
-                }
-        }
 
         fun displayOrders() {
                 println("---------- MODA Store | ORDERS ----------")
-                /* this.favorites.forEach() {
-                        println(it.getName())
-                }*/
+                this.orders.forEach() {
+                        println("-----------------------------------------" +
+                                "\n ID: ${it.id}" +
+                                "\n Products:")
+                        it.products.forEach { println("  - \t${it.name}   \t$${it.price}") }
+                        println(" Total: $ ${it.total}" +
+                                "\n Address: ${it.address}" +
+                                "\n Date: ${it.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}" +
+                                "\n-----------------------------------------")
+                }
         }
 
         fun logIn(store: Store) : RegisteredUser? { //Boolean
@@ -313,6 +332,11 @@ class RegisteredUser(
         private fun removeFromFavorites(product: Product) {
                 println("The product ${product.getName()} has been removed to your cart")
                 this.favorites.remove(product)
+        }
+
+        fun addOrder(order: Order) {
+                println("The order ${order.id} with a total of $ ${order.total} has been completed!")
+                this.orders.add(order)
         }
 }
 

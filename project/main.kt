@@ -15,8 +15,9 @@ fun main() {
 
 fun displayMenu() {
     var flag = true
-    var opcion: String = ""
+    var opcion = ""
 
+    // Mientras el usuario no este registrado, muestra el siguiente menu
     while (flag && generalUser) {
         clear()
         print ("----------WELCOME TO ${myStore.name}----------" +
@@ -29,6 +30,7 @@ fun displayMenu() {
         flag = userMenu(opcion)
     }
 
+    // Mientras el usuario este registrado, muestra el siguiente menu
     while (flag && !generalUser) {
         clear()
         print ("----------WELCOME TO ${myStore.name}----------" +
@@ -44,6 +46,7 @@ fun displayMenu() {
     }
 }
 
+// Evalucion de opciones del menu de usuario general
 fun userMenu(option: String): Boolean {
     when (option) {
         "1" -> myUser.searchProduct(myStore)
@@ -56,34 +59,35 @@ fun userMenu(option: String): Boolean {
             generalUser = false
         }
         "4" -> {
-            println("Thanks to be with us")
+            println("Thanks! See you :)")
             return false
         }
         else -> {
-            print("Sorry, please select a valid option(1-4)")
+            print("Sorry, please select a valid option(1-4): ")
             userMenu(readLine().toString())
         }
     }
     return true
 }
 
+// Evalucion de opciones del menu de usuario registrado
 fun registeredUserMenu(option: String): Boolean {
     when (option) {
         "1" -> myRegisteredUser.searchProduct(myStore, myRegisteredUser)
         "2" -> myRegisteredUser.profile(myRegisteredUser)
         "3" -> myRegisteredUser.displayFavorites()
         "4" -> myRegisteredUser.displayShoppingCart(myStore)
-        "5" -> println("orders")
+        "5" -> myRegisteredUser.displayOrders()
         "6" -> {
             generalUser = myRegisteredUser.logOut()
             displayMenu()
         }
         "7" -> {
-            println("Thanks to be with us")
+            println("Thanks! See you :)")
             return false
         }
         else -> {
-            print("Sorry, please select a valid option(1-4)")
+            print("Sorry, please select a valid option(1-4): ")
             registeredUserMenu(readLine().toString())
         }
     }

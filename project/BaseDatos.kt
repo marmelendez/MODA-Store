@@ -1,5 +1,15 @@
 package project
 
+/*
+Inicializa propiedades de la clase Store y RegisteredUser
+Para RegisteredUser se cuenta con los siguientes usuarios registrados por default:
+  User       Password  Address Payment method
+  tomas11    123       Y       Y
+  didier32   1234      Y       N
+  josearm21  12345     N       Y
+  maribel07  123456    N       N
+*/
+
 class BaseDatos {
     companion object Base {
         val myStore = Store("MODA Store")
@@ -119,11 +129,3 @@ class BaseDatos {
         }
     }
 }
-
-/*
-           Address Payment method
-tomas11    Y       Y
-didier32   Y       N
-josearm21  N       Y
-maribel07  N       N
- */
