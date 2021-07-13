@@ -27,7 +27,7 @@ class RegisteredUser(
         private fun getPassword(): String {
                 return this.password
         }
-
+        
         fun setAddress(address: String) {
                 this.address = address
         }
@@ -320,8 +320,6 @@ class RegisteredUser(
                 println("Nombre: ${user.name}")
                 println("Email: ${user.email}")
                 println("Password: ${user.password}")
-
-                readLine()
         }
 
         fun addToCart(product: Product) {
