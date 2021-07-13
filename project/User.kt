@@ -25,10 +25,12 @@ open class User (open val idUser: String) {
     private fun askUsername(store: Store): String {
         print("-> Please enter your username: ")
         var name = readLine().toString()
-        val error1 = "--- Enter a valid username (start with a letter, can contain letters and numbers and at least 6 characters): "
+        val error1 =
+            "--- Enter a valid username (start with a letter, can contain letters and numbers and at least 6 characters): "
         val error2 = "--- The given username is already registered: "
         while (!validate(error1, Form.validateUsername(name))
-            || !validate(error2, store.isInListOfUsersUsername(name))) {
+            || !validate(error2, store.isInListOfUsersUsername(name))
+        ) {
             name = readLine().toString()
         }
         return name
@@ -41,7 +43,8 @@ open class User (open val idUser: String) {
         val error1 = "--- Enter a valid email (ends with @domain.com): "
         val error2 = "--- The given email is already registered: "
         while (!validate(error1, Form.validateEmail(email))
-            || !validate(error2, store.isInListOfUsersEmail(email))) {
+            || !validate(error2, store.isInListOfUsersEmail(email))
+        ) {
             email = readLine().toString()
         }
         return email
@@ -64,6 +67,8 @@ open class User (open val idUser: String) {
             print(error)
             return false
         }
+        return true
+    }
 
     // Buscar un producto
     fun searchProduct(store: Store, user: RegisteredUser? = null) {
@@ -74,10 +79,13 @@ open class User (open val idUser: String) {
             print("\n---------- MODA Store | SEARCH ----------\n-> Hi there, which product are you looking for? ")
 
             val productName = readLine().toString()
-            val result = store.catalogProduct.filter { it.name.lowercase(Locale.getDefault()).contains(productName.lowercase(Locale.getDefault())) }
+            val result = store.catalogProduct.filter {
+                it.name.lowercase(Locale.getDefault()).contains(productName.lowercase(Locale.getDefault()))
+            }
 
             //Evaluar si el nombre del producto se encuentra en el catalogo
-            val text = if (result.isNotEmpty()) " We found ${result.size} results :)" else " Sorry no match found :("
+            val text =
+                if (result.isNotEmpty()) " We found ${result.size} results :)" else " Sorry no match found :("
             println("${text}\n\tID \tName")
             result.forEach { println("\t${it.idProduct} \t${it.name}") }
             print(
@@ -85,7 +93,8 @@ open class User (open val idUser: String) {
                         "\n  1) Search another product" +
                         "\n  2) Select a product " +
                         "\n  3) Return to menu please" +
-                        "\n\n-> Choose an option: ")
+                        "\n\n-> Choose an option: "
+            )
             option = readLine().toString()
             if (option != "1") flag = false
             if (option == "2") selectProduct(store, user)
@@ -102,12 +111,13 @@ open class User (open val idUser: String) {
         try {
             val product = selectedProduct[0]
             // Si encontro un producto con el id
-            println("\n---------- MODA Store | ${product.name} ----------" +
-                    "\nID: ${product.idProduct}" +
-                    "\nPrice: ${product.price}" +
-                    "\nColor: ${product.color}" +
-                    "\nCategory: ${product.category.name}" +
-                    "\nSize: ${product.quantity.map { it.key }}"
+            println(
+                "\n---------- MODA Store | ${product.name} ----------" +
+                        "\nID: ${product.idProduct}" +
+                        "\nPrice: ${product.price}" +
+                        "\nColor: ${product.color}" +
+                        "\nCategory: ${product.category.name}" +
+                        "\nSize: ${product.quantity.map { it.key }}"
             )
             print(
                 "\nDo you want to ...?" +
@@ -118,8 +128,8 @@ open class User (open val idUser: String) {
             )
             val op = readLine().toString()
             if (op == "1" || op == "2") {
-                if(user != null){
-                    when (op){
+                if (user != null) {
+                    when (op) {
                         "1" -> user.addToCart(product)
                         "2" -> user.addToFavorite(product)
                     }
