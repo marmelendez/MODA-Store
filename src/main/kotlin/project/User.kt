@@ -1,12 +1,14 @@
 package project
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withTimeout
 import java.util.*
 
 open class User (open val idUser: String) {
 
     // Registrar un nuevo usuario
-    fun signIn(store: Store): RegisteredUser {
-        println("---------- MODA Store | SIGN IN ----------")
+    suspend fun signIn(store: Store): RegisteredUser {
+        println("\n---------- MODA Store | SIGN IN ----------")
 
         val name = askUsername(store)
         val email = askEmail(store)
@@ -15,6 +17,15 @@ open class User (open val idUser: String) {
         // Crear nuevo RegistradoUser
         val newUser = RegisteredUser(store.listOfUsers.size.toString(), name, email, password)
         store.addUser(newUser)
+
+        withTimeout(10_000L) {
+            repeat(10) {
+                print(".")
+                delay(200)
+            }
+            print("Done!")
+        }
+
         println("\nWelcome ${newUser.getName()}! now you have an account")
 
         readLine()
@@ -36,7 +47,7 @@ open class User (open val idUser: String) {
 
     // Solicitar email y validar que cumpla con los requisitos
     private fun askEmail(store: Store): String {
-        print("\n-> Now your email: ")
+        print("-> Now your email: ")
         var email = readLine().toString()
         val error1 = "--- Enter a valid email (ends with @domain.com): "
         val error2 = "--- The given email is already registered: "
@@ -49,7 +60,7 @@ open class User (open val idUser: String) {
 
     // Solicitar contraseña y verificar que cumpla con los requisitos
     private fun askPassword(): String {
-        print("\n-> And your password, we recommend you this one ${Form.passwordGenerator()}: ")
+        print("-> And your password, we recommend you this one ${Form.passwordGenerator()}: ")
         var password = readLine().toString()
         val error1 = "--- Enter a valid password (minimum length: 8,can contain letters, numbers or . / _): "
         while (!validate(error1, Form.validatePassword(password))) {
@@ -68,7 +79,7 @@ open class User (open val idUser: String) {
     }
 
     // Buscar un producto
-    fun searchProduct(store: Store, user: RegisteredUser? = null) {
+    suspend fun searchProduct(store: Store, user: RegisteredUser? = null) {
         var flag = true
         var option: String
 
@@ -79,6 +90,13 @@ open class User (open val idUser: String) {
             val result = store.catalogProduct.filter { it.name.lowercase(Locale.getDefault()).contains(productName.lowercase(Locale.getDefault())) }
 
             //Evaluar si el nombre del producto se encuentra en el catalogo
+            withTimeout(10_000L) {
+                repeat(10) {
+                    print(".")
+                    delay(200)
+                }
+            }
+
             val text = if (result.isNotEmpty()) " We found ${result.size} results :)" else " Sorry no match found :("
             println("${text}\n\tID \tName")
             result.forEach { println("\t${it.idProduct} \t${it.name}") }
@@ -89,8 +107,11 @@ open class User (open val idUser: String) {
                         "\n  3) Return to menu please" +
                         "\n\n-> Choose an option: ")
             option = readLine().toString()
-            if (option != "1") flag = false
-            if (option == "2") selectProduct(store, user)
+            when (option) {
+                "2" -> selectProduct(store, user)
+                "3" -> println("Returning to menu, press ENTER")
+                else -> flag = false
+            }
         }
         readLine()
     }

@@ -1,5 +1,7 @@
 package project
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withTimeout
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -97,7 +99,7 @@ class RegisteredUser(
         }
     }
 
-    fun displayShoppingCart(store: Store) {
+    suspend fun displayShoppingCart(store: Store) {
         println("---------- MODA Store | SHOPPING CART----------")
         println("\tID \tProduct name \tPrice")
         if (this.shoppingCart.isEmpty()) {
@@ -294,7 +296,7 @@ class RegisteredUser(
         readLine()
     }
 
-    fun logIn(store: Store) : RegisteredUser? { //Boolean
+    suspend fun logIn(store: Store) : RegisteredUser? { //Boolean
         print("\n---------- MODA Store | LOG IN ----------\nUsername: ")
         var name = readLine().toString()
 
@@ -306,6 +308,14 @@ class RegisteredUser(
         val regUser = store.getUser(name)
         print("Password: ")
         var password : String = readLine().toString()
+
+        withTimeout(10_000L) {
+            repeat(10) {
+                print(".")
+                delay(200)
+            }
+            print("Done!")
+        }
 
         if (regUser != null) {
             while (regUser.getPassword() != password) {

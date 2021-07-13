@@ -1,16 +1,18 @@
 package project
 
+import kotlinx.coroutines.runBlocking
+
 val myStore: Store = BaseDatos.start()
 val myUser = User("1000")
 var myRegisteredUser = RegisteredUser("","","","")
 var generalUser = true
 
 
-fun main()  {
+fun main() =  runBlocking {
     displayMenu()
 }
 
-fun displayMenu() {
+suspend fun displayMenu() {
     var flag = true
     var option: String
 
@@ -44,7 +46,7 @@ fun displayMenu() {
 }
 
 // Evalucion de opciones del menu de usuario general
-fun userMenu(option: String): Boolean {
+suspend fun userMenu(option: String): Boolean {
     when (option) {
         "1" -> myUser.searchProduct(myStore)
         "2" -> {
@@ -68,7 +70,7 @@ fun userMenu(option: String): Boolean {
 }
 
 // Evalucion de opciones del menu de usuario registrado
-fun registeredUserMenu(option: String): Boolean {
+suspend fun registeredUserMenu(option: String): Boolean {
     when (option) {
         "1" -> myRegisteredUser.searchProduct(myStore, myRegisteredUser)
         "2" -> myRegisteredUser.profile()
