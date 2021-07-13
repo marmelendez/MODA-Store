@@ -1,9 +1,6 @@
-import project.BaseDatos
-import project.Store
-import project.User
-import project.RegisteredUser
+package project
 
-val myStore: Store = BaseDatos.iniciar()
+val myStore: Store = BaseDatos.start()
 val myUser = User("1000")
 var myRegisteredUser = RegisteredUser("","","","")
 var generalUser = true
@@ -15,8 +12,9 @@ fun main() {
 
 fun displayMenu() {
     var flag = true
-    var opcion: String = ""
+    var option: String
 
+    // Mientras el usuario no este registrado, muestra el siguiente menu
     while (flag && generalUser) {
         clear()
         print ("----------WELCOME TO ${myStore.name}----------" +
@@ -25,28 +23,32 @@ fun displayMenu() {
                 "\n3) Log in" +
                 "\n4) Exit" +
                 "\n\n-> Choose an option: ")
-        opcion = readLine().toString()
-        flag = userMenu(opcion)
+        option = readLine().toString()
+        flag = userMenu(option)
     }
 
+    // Mientras el usuario este registrado, muestra el siguiente menu
     while (flag && !generalUser) {
         clear()
         print ("----------WELCOME TO ${myStore.name}----------" +
                 "\n1) Search product" +
                 "\n2) Profile" +
-                "\n3) Log out" +
-                "\n4) Exit" +
+                "\n3) Check favorites" +
+                "\n4) Check shopping cart" +
+                "\n5) Check orders" +
+                "\n6) Log out" +
                 "\n\n-> Choose an option: ")
-        opcion = readLine().toString()
-        flag = registeredUserMenu(opcion)
+        option = readLine().toString()
+        flag = registeredUserMenu(option)
     }
 }
 
+// Evalucion de opciones del menu de usuario general
 fun userMenu(option: String): Boolean {
     when (option) {
         "1" -> myUser.searchProduct(myStore)
         "2" -> {
-            myRegisteredUser = myUser.signIn(myStore)!!
+            myRegisteredUser = myUser.signIn(myStore)
             generalUser = false
         }
         "3" -> {
@@ -54,31 +56,35 @@ fun userMenu(option: String): Boolean {
             generalUser = false
         }
         "4" -> {
-            println("Thanks to be with us")
+            println("Thanks! See you :)")
             return false
         }
         else -> {
-            print("Sorry, please select a valid option(1-4)")
+            print("Sorry, please select a valid option(1-4): ")
             userMenu(readLine().toString())
         }
     }
     return true
 }
 
+// Evalucion de opciones del menu de usuario registrado
 fun registeredUserMenu(option: String): Boolean {
     when (option) {
-        "1" -> myRegisteredUser.searchProduct(myStore)
-        "2" -> myRegisteredUser.profile(myStore, myRegisteredUser)
-        "3" -> {
+        "1" -> myRegisteredUser.searchProduct(myStore, myRegisteredUser)
+        "2" -> myRegisteredUser.profile(myRegisteredUser)
+        "3" -> myRegisteredUser.displayFavorites()
+        "4" -> myRegisteredUser.displayShoppingCart(myStore)
+        "5" -> myRegisteredUser.displayOrders()
+        "6" -> {
             generalUser = myRegisteredUser.logOut()
             displayMenu()
         }
-        "4" -> {
-            println("Thanks to be with us")
+        "7" -> {
+            println("Thanks! See you :)")
             return false
         }
         else -> {
-            print("Sorry, please select a valid option(1-4)")
+            print("Sorry, please select a valid option(1-4): ")
             registeredUserMenu(readLine().toString())
         }
     }
@@ -86,7 +92,7 @@ fun registeredUserMenu(option: String): Boolean {
 }
 
 fun clear() {
-    for (i in 0..20) {
+    for (i in 0..10) {
         println()
     }
 }
