@@ -1,27 +1,41 @@
 package project
 
+/*
+Inicializa propiedades de la clase Store y RegisteredUser
+Para RegisteredUser se cuenta con los siguientes usuarios registrados por default:
+  User       Password  Address Payment method
+  tomas11    123       Y       Y
+  didier32   1234      Y       N
+  josearm21  12345     N       Y
+  maribel07  123456    N       N
+*/
+
 class BaseDatos {
     companion object Base {
-        val myStore = Store("MODA project.Store")
+        private val myStore = Store("MODA Store")
 
-        var idProduct = 1
-        var idUser = 1
-        var idCategory = 1
+        private var idProduct = 1
+        private var idUser = 1
+        private var idCategory = 1
 
-        fun iniciar(): Store {
+        fun start(): Store {
             setCategory()
             setProducts()
             setUsers()
+            setShoppingCart()
+            setFavorites()
+            setAddress()
+            setPaymentMethod()
             return this.myStore
         }
 
-        fun setCategory() {
+        private fun setCategory() {
             myStore.addCategory(Category(idCategory++,"Dama"))
             myStore.addCategory(Category(idCategory++,"Caballero"))
         }
 
-        fun setProducts() {
-            var category = myStore.catalogCategory
+        private fun setProducts() {
+            val category = myStore.catalogCategory
             //Dama
             myStore.addProduct(Product(idProduct++,"Blusa estampada",category[0],"Rosa",130F,mapOf("S" to 100, "M" to 50, "X" to 100)))
             myStore.addProduct(Product(idProduct++,"Blusa de tirantes",category[0],"Azul",300F, mapOf("S" to 100, "M" to 50, "X" to 100)))
@@ -48,18 +62,70 @@ class BaseDatos {
         }
 
 
-        fun setUsers() {
-            myStore.addUser(RegisteredUser(idUser++.toString(), "tomas11", "tomas@hotmail.com", "123","Mexico City","Credit Card"))
-            myStore.addUser(RegisteredUser(idUser++.toString(), "didier32", "didier@hotmail.com", "1234","Cancun","Credit Card"))
-            myStore.addUser(RegisteredUser(idUser++.toString(), "josearm21", "josearmando@outlook.es", "123","Mexico City","Credit Card"))
-            myStore.addUser(RegisteredUser(idUser++.toString(), "maribel07", "maribel@live.com", "123","Durango","Credit Card"))
+        private fun setUsers() {
+            myStore.addUser(RegisteredUser(idUser++.toString(), "tomas11", "tomas@hotmail.com", "123"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "didier32", "didier@hotmail.com", "1234"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "josearm21", "josearmando@outlook.es", "12345"))
+            myStore.addUser(RegisteredUser(idUser++.toString(), "maribel07", "maribel@live.com", "123456"))
+        }
+
+        private fun setShoppingCart() {
+            // User: tomas11
+            myStore.listOfUsers[0].addToCart(myStore.catalogProduct[0])
+            myStore.listOfUsers[0].addToCart(myStore.catalogProduct[1])
+            myStore.listOfUsers[0].addToCart(myStore.catalogProduct[2])
+            myStore.listOfUsers[0].addToCart(myStore.catalogProduct[3])
+
+            // User: didier32
+            myStore.listOfUsers[1].addToCart(myStore.catalogProduct[4])
+            myStore.listOfUsers[1].addToCart(myStore.catalogProduct[5])
+
+
+            // User: josearm21
+            myStore.listOfUsers[2].addToCart(myStore.catalogProduct[6])
+            myStore.listOfUsers[2].addToCart(myStore.catalogProduct[7])
+            myStore.listOfUsers[2].addToCart(myStore.catalogProduct[8])
+
+            // User: maribel07
+            myStore.listOfUsers[3].addToCart(myStore.catalogProduct[9])
+        }
+
+        private fun setFavorites() {
+            // User: tomas11
+            myStore.listOfUsers[0].addToFavorite(myStore.catalogProduct[10])
+
+            // User: didier32
+            myStore.listOfUsers[1].addToFavorite(myStore.catalogProduct[0])
+            myStore.listOfUsers[1].addToFavorite(myStore.catalogProduct[8])
+
+            // User: josearm21
+            myStore.listOfUsers[2].addToFavorite(myStore.catalogProduct[9])
+            myStore.listOfUsers[2].addToFavorite(myStore.catalogProduct[10])
+            myStore.listOfUsers[2].addToFavorite(myStore.catalogProduct[11])
+
+            // User: maribel07
+            myStore.listOfUsers[3].addToFavorite(myStore.catalogProduct[12])
+            myStore.listOfUsers[3].addToFavorite(myStore.catalogProduct[13])
+            myStore.listOfUsers[3].addToFavorite(myStore.catalogProduct[14])
+            myStore.listOfUsers[3].addToFavorite(myStore.catalogProduct[15])
+        }
+
+        private fun setAddress() {
+            // User: tomas11
+            myStore.listOfUsers[0].setAddress("Francisco Zarco 592, Mexico, Durango, Lerdo, 35150")
+
+            // User: didier32
+            myStore.listOfUsers[1].setAddress("Miguel Aleman 119, Mexico, Jalisco, Guadalajara, 21170")
+
+        }
+
+        private fun setPaymentMethod() {
+            // User: tomas11
+            myStore.listOfUsers[0].setPaymentMethod("Credit card", mapOf("Number" to "1234567890123456", "Date" to "04/22", "Security Number" to "123"))
+            myStore.listOfUsers[0].setPaymentMethod("Debit card", mapOf("Number" to "1234567890123457", "Date" to "06/24", "Security Number" to "456"))
+
+            // User: josearm21
+            myStore.listOfUsers[2].setPaymentMethod("Credit card", mapOf("Number" to "1234567890123458", "Date" to "10/23", "Security Number" to "789"))
         }
     }
-
-
-    /*fun setShoppingCart(listProducts : MutableList<project.Product>): MutableList<project.Product>{
-        shoppingCart.add(listProducts[0])
-        shoppingCart.add(listProducts[1])
-        return shoppingCart
-    }*/
 }
