@@ -64,8 +64,6 @@ open class User (open val idUser: String) {
             print(error)
             return false
         }
-        return true
-    }
 
     // Buscar un producto
     fun searchProduct(store: Store, user: RegisteredUser? = null) {
@@ -82,7 +80,6 @@ open class User (open val idUser: String) {
             val text = if (result.isNotEmpty()) " We found ${result.size} results :)" else " Sorry no match found :("
             println("${text}\n\tID \tName")
             result.forEach { println("\t${it.idProduct} \t${it.name}") }
-
             print(
                 "\nDo you want to ...?" +
                         "\n  1) Search another product" +
