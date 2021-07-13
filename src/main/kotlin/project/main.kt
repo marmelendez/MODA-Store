@@ -1,5 +1,7 @@
 package project
 
+/* Esto es un comentario*/
+
 import kotlinx.coroutines.runBlocking
 
 val myStore: Store = BaseDatos.start()
