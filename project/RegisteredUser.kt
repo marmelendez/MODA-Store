@@ -312,13 +312,125 @@ class RegisteredUser(
         }
 
         fun profile(user: RegisteredUser){
-                println("---------- MODA Store | PROFILE ----------")
-                println("Welcome again ${user.name} to MODA Store")
+            println("---------- MODA Store | PROFILE ----------")
+            println("Welcome again ${user.name} to MODA Store")
 
-                println("ID: ${user.idUser}")
-                println("Nombre: ${user.name}")
-                println("Email: ${user.email}")
-                println("Password: ${user.password}")
+            println("\nProfile information" +
+                    "\n\tID: ${user.idUser}" +
+                    "\n\tNombre: ${user.name}" +
+                    "\n\tEmail: ${user.email}"+
+                    "\n\tAddress: ${user.address}"+
+                    "\n\tPayment Method: ${user.payment}")
+            if(user.address == ""|| user.payment=="") println("Some lands are blanked"+"\nConsider to fill it")
+
+            var flag = true
+            while(flag){
+                println("\n\nWhat would you like to do?" +
+                        "\n1) Change settings" +
+                        "\n2) Add information" +
+                        "\n3) Return to menu" +
+                        "\n\n-> Choose an option: ")
+                var option = readLine().toString()
+                when (option) {
+                    "1" -> {
+                        changeSettings(user)
+                        profile(user)
+                    }
+                    "2" -> {
+                        addInformation(user)
+                        profile(user)
+                    }
+                    "3" -> flag = false
+                    else -> {
+                        println("Sorry, please select a valid option(1-2)\n")
+                    }
+                }
+            }
+        }
+        
+        fun changeSettings(user: RegisteredUser){
+            var flag = true
+            while(flag){
+                println("What would you like to change?" +
+                        "\n1) Name" +
+                        "\n2) Email" +
+                        "\n3) Password" +
+                        "\n4) Address" +
+                        "\n5) Payment Method" +
+                        "\n6) Return to profile" +
+                        "\n\n-> Choose an option: ")
+                var option = readLine().toString()
+                when (option) {
+                    "1" -> {
+                        println("Enter a new Name")
+                        var name= readLine()?.toString()
+                        while (name == null ){
+                            println("Please enter a new name")
+                            name = readLine()?.toString()
+                        }
+                        setName(name)
+                        println("Your name has been changed to $name")
+                    }
+                    "2" -> { println("Enter a new Email")
+                        var email= readLine()?.toString()
+                        while (email == null ){
+                            println("Please enter a new Email")
+                            email = readLine()?.toString()
+                        }
+                        setEmail(email)
+                        println("Your name has been changed to $email")
+                    }
+                    "3" -> { println("Enter a new Password")
+                        var password= readLine()?.toString()
+                        while (password == null ){
+                            println("Please enter a new Password")
+                            password = readLine()?.toString()
+                        }
+                        setPassword(password)
+                        println("Your name has been changed to $password")
+                    }
+                    "4" -> setAddress(user)
+                    "5" -> setPaymentMethod(user)
+                    "6" -> flag = false
+                    else -> {
+                        println("Sorry, please select a valid option(1-6)\n")
+                    }
+                }
+            }
+        }
+
+        fun addInformation(user: RegisteredUser){
+            var flag = true
+            while(flag){
+                println("What type of information would you like to add?" +
+                        "\n1) Add address" +
+                        "\n2) Add payment method" +
+                        "\n3) Return to profile" +
+                        "\n\n-> Choose an option: ")
+                var option = readLine().toString()
+                when (option) {
+                    "1" -> setAddress(user)
+                    "2" -> setPaymentMethod(user)
+                    "3" -> flag = false
+                    else -> {
+                        println("Sorry, please select a valid option(1-3)\n")
+                    }
+                }
+            }
+        }
+
+        fun setPaymentMethod(user: RegisteredUser){
+            println("\nLast payment method: ${user.payment}")
+            println("Set your payment method: ")
+            user.payment = readLine().toString()
+            println("\nPayment method updated: ${user.payment}\n\n")
+        }
+
+        fun setAddress(user: RegisteredUser){
+            println("\nLast address: ${user.address}")
+            println("Set your address: ")
+            user.address = readLine().toString()
+            println("\nAddress updated: ${user.address}\n\n")
         }
 
         fun addToCart(product: Product) {

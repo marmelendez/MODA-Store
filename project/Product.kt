@@ -7,3 +7,4 @@ data class Product(
     var color: String,
     var price: Float,
     var quantity: Map<String, Int>)
+
