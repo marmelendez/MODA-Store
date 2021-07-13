@@ -110,7 +110,7 @@ class RegisteredUser(
 
         private fun makePurchase() {
                 println("---------- MODA Store | PAYMENT ----------")
-                if (shoppingCart.isEmpty()) {
+                if (shoppingCart.isEmpty()) { //quitar
                         println("Sorry, your cart is empty")
                 } else {
                         val total = getTotal()
@@ -118,6 +118,7 @@ class RegisteredUser(
                         val type = askPaymentMethod()
                         var ask =  true
                         if (paymentMethod.getValue(type).values.isNotEmpty()) ask = false
+
                         checkPaymentMethod(type)
                         println()
                         addOrder(Order(this.orders.size.toString(), this.shoppingCart,total,this.address, this.paymentMethod, LocalDateTime.now()))
@@ -130,8 +131,8 @@ class RegisteredUser(
                                         this.paymentMethod[type] = mapOf()
                                         println ("The payment method wasn't saved for future purchases")
                                 }
-                                this.shoppingCart = mutableListOf()
                         }
+                        this.shoppingCart = mutableListOf()
                 }
         }
 
@@ -241,7 +242,7 @@ class RegisteredUser(
                 var securityNum = readLine().toString()
                 securityNum = getValidData(securityNum, 3, "Enter a valid security number, must have 3 digits: ")
 
-                val data = mapOf("Number" to number, "Date" to date, "Security number" to securityNum )
+                val data = mapOf("Number" to number, "Date" to date, "Security number" to securityNum)
                 this.paymentMethod[type] = data
         }
 
