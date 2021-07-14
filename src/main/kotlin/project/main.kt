@@ -1,3 +1,13 @@
+/**
+ * Main function
+ *
+ * This file calls the function and control of the menu
+ *
+ * @author Oscar Tomas Guerrero
+ * @author Lizbeth Maribel Melendez
+ * @author Didier Erosa
+ * @author Jose Armando Cano
+ */
 package project
 
 import kotlinx.coroutines.runBlocking
@@ -12,11 +22,13 @@ fun main() =  runBlocking {
     displayMenu()
 }
 
+/**
+ * Display the menu for general user
+ * */
 suspend fun displayMenu() {
     var flag = true
     var option: String
 
-    // Mientras el usuario no este registrado, muestra el siguiente menu
     while (flag && generalUser) {
         clear()
         print ("----------WELCOME TO ${myStore.name}----------" +
@@ -29,7 +41,6 @@ suspend fun displayMenu() {
         flag = userMenu(option)
     }
 
-    // Mientras el usuario este registrado, muestra el siguiente menu
     while (flag && !generalUser) {
         clear()
         print ("----------WELCOME TO ${myStore.name}----------" +
@@ -45,7 +56,11 @@ suspend fun displayMenu() {
     }
 }
 
-// Evalucion de opciones del menu de usuario general
+/**
+ * Evaluate the option the general user select
+ * @param option The option of the menu the user chooses
+ * @return Boolean Indicates if the user wants to continue in the same menu or exit
+ * */
 suspend fun userMenu(option: String): Boolean {
     when (option) {
         "1" -> myUser.searchProduct(myStore)
@@ -69,11 +84,15 @@ suspend fun userMenu(option: String): Boolean {
     return true
 }
 
-// Evalucion de opciones del menu de usuario registrado
+/**
+ * Evaluate the option the registered user select
+ * @param option The option of the menu the user chooses
+ * @return Boolean Indicates if the user wants to continue in the same menu or log out
+ * */
 suspend fun registeredUserMenu(option: String): Boolean {
     when (option) {
         "1" -> myRegisteredUser.searchProduct(myStore, myRegisteredUser)
-        "2" -> myRegisteredUser.profile()
+        "2" -> myRegisteredUser.profile(myStore)
         "3" -> myRegisteredUser.displayFavorites()
         "4" -> myRegisteredUser.displayShoppingCart(myStore)
         "5" -> myRegisteredUser.displayOrders()
@@ -93,6 +112,9 @@ suspend fun registeredUserMenu(option: String): Boolean {
     return true
 }
 
+/**
+ * Add some blank spaces to "clear" the console
+ * */
 fun clear() {
     for (i in 0..10) {
         println()

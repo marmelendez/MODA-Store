@@ -1,3 +1,8 @@
+/**
+ * Data class Product
+ *
+ * Contains the properties of a Product
+ */
 package project
 
 data class Product(

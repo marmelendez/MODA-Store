@@ -1,3 +1,10 @@
+/**
+ * A general user of the Store
+ *
+ * Implements the methods of a general user in the app
+ *
+ * @property idUser Unique ID of the user
+ */
 package project
 
 import kotlinx.coroutines.delay
@@ -6,7 +13,11 @@ import java.util.*
 
 open class User (open val idUser: String) {
 
-    // Registrar un nuevo usuario
+    /**
+     * Register a new user
+     * @param store the app store
+     * @return RegisteredUser the new registered user
+     * */
     suspend fun signIn(store: Store): RegisteredUser {
         println("\n---------- MODA Store | SIGN IN ----------")
 
@@ -14,7 +25,6 @@ open class User (open val idUser: String) {
         val email = askEmail(store)
         val password = askPassword()
 
-        // Crear nuevo RegistradoUser
         val newUser = RegisteredUser(store.listOfUsers.size.toString(), name, email, password)
         store.addUser(newUser)
 
@@ -32,9 +42,13 @@ open class User (open val idUser: String) {
         return newUser
     }
 
-    // Solicitar nombre y validar que cumpla con los requisitos
-    private fun askUsername(store: Store): String {
-        print("-> Please enter your username: ")
+    /**
+     * Ask for the username and validates it
+     * @param store the app store
+     * @return String a valid username
+     * */
+    internal fun askUsername(store: Store): String {
+        print("-> Enter your username: ")
         var name = readLine().toString()
         val error1 = "--- Enter a valid username (start with a letter, can contain letters and numbers and at least 6 characters): "
         val error2 = "--- The given username is already registered: "
@@ -45,9 +59,13 @@ open class User (open val idUser: String) {
         return name
     }
 
-    // Solicitar email y validar que cumpla con los requisitos
-    private fun askEmail(store: Store): String {
-        print("-> Now your email: ")
+    /**
+     * Ask for the email and validates it
+     * @param store the app store
+     * @return String a valid email
+     * */
+    internal fun askEmail(store: Store): String {
+        print("-> Enter your email: ")
         var email = readLine().toString()
         val error1 = "--- Enter a valid email (ends with @domain.com): "
         val error2 = "--- The given email is already registered: "
@@ -58,9 +76,12 @@ open class User (open val idUser: String) {
         return email
     }
 
-    // Solicitar contraseña y verificar que cumpla con los requisitos
-    private fun askPassword(): String {
-        print("-> And your password, we recommend you this one ${Form.passwordGenerator()}: ")
+    /**
+     * Ask for the password and validates it
+     * @return String a valid password
+     * */
+    internal fun askPassword(): String {
+        print("-> Enter your password, we recommend you this one ${Form.passwordGenerator()}: ")
         var password = readLine().toString()
         val error1 = "--- Enter a valid password (minimum length: 8,can contain letters, numbers or . / _): "
         while (!validate(error1, Form.validatePassword(password))) {
@@ -69,7 +90,12 @@ open class User (open val idUser: String) {
         return password
     }
 
-    // Validar los datos
+    /**
+     * Validate the data with the given function
+     * @param error the error message to print
+     * @param funValidate the function we're going to use to validate the data
+     * @return Boolean false if there's and error, true if there's not
+     * */
     private fun validate(error: String, funValidate: Boolean): Boolean {
         if (!funValidate) {
             print(error)
@@ -78,7 +104,11 @@ open class User (open val idUser: String) {
         return true
     }
 
-    // Buscar un producto
+    /**
+     * Search if a product is in the store catalog
+     * @param store the app store
+     * @param user the registered user
+     * */
     suspend fun searchProduct(store: Store, user: RegisteredUser? = null) {
         var flag = true
         var option: String
@@ -89,7 +119,6 @@ open class User (open val idUser: String) {
             val productName = readLine().toString()
             val result = store.catalogProduct.filter { it.name.lowercase(Locale.getDefault()).contains(productName.lowercase(Locale.getDefault())) }
 
-            //Evaluar si el nombre del producto se encuentra en el catalogo
             withTimeout(10_000L) {
                 repeat(10) {
                     print(".")
@@ -107,16 +136,27 @@ open class User (open val idUser: String) {
                         "\n  3) Return to menu please" +
                         "\n\n-> Choose an option: ")
             option = readLine().toString()
-            when (option) {
-                "2" -> selectProduct(store, user)
-                "3" -> println("Returning to menu, press ENTER")
-                else -> flag = false
+            flag = when (option) {
+                "1" -> true
+                "2" -> {
+                    selectProduct(store, user)
+                    false
+                }
+                "3" -> {
+                    println("Returning to menu, press ENTER")
+                    false
+                }
+                else -> false
             }
         }
         readLine()
     }
 
-    // Seleccionar un producto del catalogo de la tienda
+    /**
+     * Select a product from the store catalog
+     * @param store the app store
+     * @param user the registered user
+     * */
     private fun selectProduct(store: Store, user: RegisteredUser?) {
         print("   -> Please enter the product ID: ")
         val id = readLine().toString()
@@ -124,7 +164,6 @@ open class User (open val idUser: String) {
 
         try {
             val product = selectedProduct[0]
-            // Si encontro un producto con el id
             println("\n---------- MODA Store | ${product.name} ----------" +
                     "\nID: ${product.idProduct}" +
                     "\nPrice: ${product.price}" +
@@ -145,6 +184,7 @@ open class User (open val idUser: String) {
                     when (op){
                         "1" -> user.addToCart(product)
                         "2" -> user.addToFavorite(product)
+                        "3" -> println("Returning to menu, press ENTER")
                     }
                 } else {
                     println("You don't have access to this part, please sign in or log in")

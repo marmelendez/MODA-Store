@@ -1,14 +1,9 @@
+/**
+ * The default database of the programa
+ *
+ * Set some default configurations for Category, Product, User, Shopping Cart, Favorites, Address and Payment Method
+ */
 package project
-
-/*
-Inicializa propiedades de la clase Store y RegisteredUser
-Para RegisteredUser se cuenta con los siguientes usuarios registrados por default:
-  User       Password  Address Payment method
-  tomas11    123       Y       Y
-  didier32   1234      Y       N
-  josearm21  12345     N       Y
-  maribel07  123456    N       N
-*/
 
 class BaseDatos {
     companion object Base {

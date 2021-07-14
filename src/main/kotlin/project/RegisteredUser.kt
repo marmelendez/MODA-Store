@@ -1,3 +1,13 @@
+/**
+ * A registered user of the Store
+ *
+ * Implements the methods of a registered user in the app
+ *
+ * @property idUser Unique ID
+ * @property name username
+ * @property email email registered
+ * @property password password of the account
+ */
 package project
 
 import kotlinx.coroutines.delay
@@ -18,38 +28,77 @@ class RegisteredUser(
     private var paymentMethod: MutableMap<String,Map<String, String>> =
         mutableMapOf("Credit card" to mapOf(), "Debit card" to mapOf())
 
+    /**
+     * Get the username
+     * @return String name
+     * */
     fun getName(): String {
         return this.name
     }
 
+    /**
+     * Get the email
+     * @return String email
+     * */
     fun getEmail(): String {
         return this.email
     }
 
+    /**
+     * Get the password
+     * @return String password
+     * */
     private fun getPassword(): String {
         return this.password
     }
 
+    /**
+     * Set a new value to the name property
+     * @param name new value of username
+     * */
     private fun setName(name: String) {
         this.name = name
     }
 
+    /**
+     * Set a new value to the email property
+     * @param email new value of email
+     * */
     private fun setEmail(email:String) {
         this.email = email
     }
 
+    /**
+     * Set a new value to the password property
+     * @param password new value of password
+     * */
     private fun setPassword(password:String) {
         this.password= password
     }
 
+    /**
+     * Set a new value to the address property
+     * @param address new value of address
+     * */
     fun setAddress(address: String) {
         this.address = address
     }
 
+    /**
+     * Set a new value to the payment method property
+     * @param type type of payment method (credit or debit card)
+     * @param data information of the card
+     * */
     fun setPaymentMethod(type: String, data: Map<String,String>) {
         this.paymentMethod[type] = data
     }
 
+    /**
+     * Find a product with a specific id
+     * @param list the list of products
+     * @param text the name of the list
+     * @return Product if there's one with the given id, null if there's not
+     * */
     private fun findProduct(list: MutableList<Product>, text: String): Product? {
         print("   -> Please enter the product ID: ")
         val id = readLine().toString()
@@ -62,8 +111,11 @@ class RegisteredUser(
         }
     }
 
+    /**
+     * Show the list of favorites and a menu
+     * */
     fun displayFavorites() {
-        println("---------- MODA Store | FAVORITES----------")
+        println("\n---------- MODA Store | FAVORITES----------")
         println("\tID \tProduct name \tPrice")
         if (this.favorites.isEmpty()) {
             println("Your list of favorites is empty :( \n\nPress ENTER and return to menu to find some cool products")
@@ -78,11 +130,15 @@ class RegisteredUser(
             when (readLine().toString()) {
                 "1" -> addProductToCart()
                 "2" -> removeProductFromFavorites()
+                "3" -> println("Returning to menu, press ENTER")
             }
         }
         readLine()
     }
 
+    /**
+     * Add a product from the list of favorites to the cart
+     * */
     private fun addProductToCart() {
         val product = findProduct(this.favorites, "favorites")
         if (product != null) {
@@ -90,6 +146,9 @@ class RegisteredUser(
         }
     }
 
+    /**
+     * Remove a product that is in the list of favorites
+     * */
     private fun removeProductFromFavorites() {
         val product = findProduct(this.favorites, "favorites")
         if (product != null) {
@@ -99,8 +158,12 @@ class RegisteredUser(
         }
     }
 
+    /**
+     * Show the products and price of the shopping cart
+     * @param store the app store
+     * */
     suspend fun displayShoppingCart(store: Store) {
-        println("---------- MODA Store | SHOPPING CART----------")
+        println("\n---------- MODA Store | SHOPPING CART----------")
         println("\tID \tProduct name \tPrice")
         if (this.shoppingCart.isEmpty()) {
             println("Your cart is empty :( \n\nPress ENTER and return to the menu to find some cool products")
@@ -117,38 +180,50 @@ class RegisteredUser(
                 "1" -> makePurchase()
                 "2" -> removeProductFromCart()
                 "3" -> searchProduct(store, this)
+                "4" -> println("Returning to menu, press ENTER")
             }
         }
         readLine()
     }
 
-    private fun makePurchase() {
-        println("---------- MODA Store | PAYMENT ----------")
-        if (shoppingCart.isEmpty()) {
-            println("Sorry, your cart is empty")
-        } else {
-            val total = getTotal()
-            askAddress()
-            val type = askPaymentMethod()
-            var ask =  true
-            if (paymentMethod.getValue(type).values.isNotEmpty()) ask = false
-            checkPaymentMethod(type)
-            println()
-            addOrder(Order(this.orders.size.toString(), this.shoppingCart,total,this.address, this.paymentMethod, LocalDateTime.now()))
+    /**
+     * Ask for the missing data and realize the purchase with the product from the shopping cart
+     * */
+    private suspend fun makePurchase() {
+        println("\n---------- MODA Store | PAYMENT ----------")
+        val total = getTotal()
+        askAddress()
+        val type = askPaymentMethod()
+        var ask =  true
+        if (paymentMethod.getValue(type).values.isNotEmpty()) ask = false
+        checkPaymentMethod(type)
+        println()
 
-            if (ask) {
-                print("Do you want to save your payment method for future purchases? y/n: ")
-                if (readLine().toString() == "y") {
-                    println ("Payment method saved")
-                } else {
-                    this.paymentMethod[type] = mapOf()
-                    println ("The payment method wasn't saved for future purchases")
-                }
-                this.shoppingCart = mutableListOf()
+        withTimeout(10_000L) {
+            repeat(10) {
+                print(".")
+                delay(200)
             }
         }
+
+        addOrder(Order(this.orders.size.toString(), this.shoppingCart,total,this.address, this.paymentMethod, LocalDateTime.now()))
+
+        if (ask) {
+            print("Do you want to save your payment method for future purchases? y/n: ")
+            if (readLine().toString() == "y") {
+                println ("Payment method saved")
+            } else {
+                this.paymentMethod[type] = mapOf()
+                println ("The payment method wasn't saved for future purchases")
+            }
+        }
+        this.shoppingCart = mutableListOf()
     }
 
+    /**
+     * Add the prices of each product in the shopping cart
+     * @return Float the total
+     * */
     private fun getTotal(): Float {
         var subtotal = 0F
         shoppingCart.forEach {
@@ -157,10 +232,14 @@ class RegisteredUser(
         }
         val iva = subtotal * 0.16F
         val total = subtotal + iva
-        println("Subtotal: $ ${subtotal}\nIVA: ${iva}\nTotal a pagar: $total")
+        println("Subtotal: $ ${subtotal}\nIVA: ${iva}\nTotal: $total")
         return total
     }
 
+    /**
+     * If there's a saved address asked if the user want to use it for the purchase
+     * If not get the address property value again
+     * */
     private fun askAddress() {
         var res: String
         if (this.address.isNotEmpty()) {
@@ -178,6 +257,9 @@ class RegisteredUser(
         }
     }
 
+    /**
+     * Get the address property value
+     * */
     private fun fillAddressData(): String {
         var userAddress = ""
         print("Street: ")
@@ -188,12 +270,18 @@ class RegisteredUser(
         userAddress += readLine().toString() + ", "
         print("State: ")
         userAddress += readLine().toString() + ", "
+        print("City: ")
+        userAddress += readLine().toString() + ", "
         print("Zip code: ")
         userAddress += readLine().toString()
 
         return userAddress
     }
 
+    /**
+     * Ask for the type of payment method: credit or debit card
+     * @return String the type: credit or debit card
+     * */
     private fun askPaymentMethod(): String {
         print("\nSelect your payment method" +
                 "\n  1) Credit card" +
@@ -221,6 +309,11 @@ class RegisteredUser(
         return type
     }
 
+    /**
+     * Check if there's a saved payment method
+     * If not ask for the information
+     * @param type credit or debit card
+     * */
     private fun checkPaymentMethod(type: String) {
         if (this.paymentMethod.getValue(type).values.isEmpty()) {
             println("\n! Please enter your $type data")
@@ -237,11 +330,15 @@ class RegisteredUser(
                 println("Then please enter your $type data")
                 fillCardData(type)
             } else {
-                println("Okey, let's proceed! :)")
+                println("Okay, let's proceed! :)")
             }
         }
     }
 
+    /**
+     * Get and set the payment method property value
+     * @param type credit or debit card
+     * */
     private fun fillCardData(type: String) {
         print("Number (16 digits): ")
         var number = readLine().toString()
@@ -259,6 +356,13 @@ class RegisteredUser(
         this.paymentMethod[type] = data
     }
 
+    /**
+     * Evaluate if the credit card data is valid
+     * @param response users input
+     * @param cond the condition with which it must meet
+     * @param message an error message
+     * @return String a valid data
+     * */
     private fun getValidData(response: String, cond: Int, message: String): String{
         var data = response
         while (data.length < cond) {
@@ -268,6 +372,9 @@ class RegisteredUser(
         return data
     }
 
+    /**
+     * Remove a product from de shopping cart
+     * */
     private fun removeProductFromCart() {
         val product = findProduct(this.shoppingCart, "cart")
         if (product != null) {
@@ -277,8 +384,11 @@ class RegisteredUser(
         }
     }
 
+    /**
+     * Display all the orders made
+     * */
     fun displayOrders() {
-        println("---------- MODA Store | ORDERS ----------")
+        println("\n---------- MODA Store | ORDERS ----------")
         if (this.orders.isEmpty()) {
             println("Your list of orders is empty :( \n\nPress ENTER and return to menu to find some cool products")
         } else {
@@ -293,9 +403,15 @@ class RegisteredUser(
                         "\n-----------------------------------------")
             }
         }
+        println("Press ENTER to return to menu")
         readLine()
     }
 
+    /**
+     * Ask for the username and password of the user
+     * @param store the app store
+     * @return RegisteredUser the user with the given username and password
+     * */
     suspend fun logIn(store: Store) : RegisteredUser? { //Boolean
         print("\n---------- MODA Store | LOG IN ----------\nUsername: ")
         var name = readLine().toString()
@@ -314,7 +430,6 @@ class RegisteredUser(
                 print(".")
                 delay(200)
             }
-            print("Done!")
         }
 
         if (regUser != null) {
@@ -331,11 +446,18 @@ class RegisteredUser(
         return regUser
     }
 
+    /**
+     * Log out from the registered account
+     * */
     fun logOut() : Boolean {
         print("\n---------- MODA Store | LOG OUT ----------")
         return true
     }
 
+    /**
+     * Displays the information of the payment method
+     * @param type credit or debit card
+     * */
     private fun printPaymentData(type: String){
         println("\t-> $type")
         this.paymentMethod.getValue(type).forEach{
@@ -343,11 +465,15 @@ class RegisteredUser(
         }
     }
 
-    fun profile(){
-        println("---------- MODA Store | PROFILE ----------")
+    /**
+     * Displays the profile information and the menu
+     * @param store the app store
+     * */
+    fun profile(store: Store){
+        println("\n---------- MODA Store | PROFILE ----------")
         println("Welcome again ${this.name} to MODA Store")
 
-        println("\nProfile information" +
+        println("-----------------------------------------\nProfile information" +
                 "\n\tID: ${this.idUser}" +
                 "\n\tNombre: ${this.name}" +
                 "\n\tEmail: ${this.email}"+
@@ -360,9 +486,10 @@ class RegisteredUser(
             || this.paymentMethod.getValue("Credit card").values.isEmpty()
             || this.paymentMethod.getValue("Debit card").values.isEmpty()) println("! Some lands are blanked, Consider to fill it")
 
+        println("-----------------------------------------")
         var flag = true
         while(flag){
-            print("\n\nWhat would you like to do?" +
+            print("\nWhat would you like to do?" +
                     "\n1) Change settings" +
                     "\n2) Add information" +
                     "\n3) Return to menu" +
@@ -370,15 +497,18 @@ class RegisteredUser(
             when (readLine().toString()) {
                 "1" -> {
                     changeSettings()
-                    profile()
+                    profile(store)
                     flag = false
                 }
                 "2" -> {
                     addInformation()
-                    profile()
+                    profile(store)
                     flag = false
                 }
-                "3" -> flag = false
+                "3" -> {
+                    println("Returning to menu, press ENTER")
+                    flag = false
+                }
                 else -> {
                     print("\nSorry, please select a valid option(1-2): ")
                 }
@@ -386,18 +516,10 @@ class RegisteredUser(
         }
     }
 
-    private fun changeData(data: String): String {
-        print("Enter a new $data: ")
-        var response = readLine()
-        while (response == null ){
-            print("Please enter a new $data: ")
-            response = readLine()
-        }
-        return response
-    }
-
+    /**
+     * Display the properties the user is able to change and change it
+     * */
     private fun changeSettings(){
-        //validar nuevamente los datos
         var flag = true
         while(flag){
             print("\nWhat would you like to change?" +
@@ -410,15 +532,15 @@ class RegisteredUser(
                     "\n\n-> Choose an option: ")
             when (readLine().toString()) {
                 "1" -> {
-                    setName(changeData("name"))
+                    setName(askUsername(myStore))
                     println("Your name has been changed to ${this.name}")
                 }
                 "2" -> {
-                    setEmail(changeData("email"))
+                    setEmail(askEmail(myStore))
                     println("Your email has been changed to ${this.email}")
                 }
                 "3" -> {
-                    setPassword(changeData("password"))
+                    setPassword(askPassword())
                     println("Your password has been changed to ${this.password}")
                 }
                 "4" -> setAddress(fillAddressData())
@@ -439,6 +561,9 @@ class RegisteredUser(
         }
     }
 
+    /**
+     * Displays the menu to add information (address of payment method)
+     * */
     private fun addInformation(){
         var flag = true
         while(flag){
@@ -463,26 +588,46 @@ class RegisteredUser(
         }
     }
 
+    /**
+     * Add a product to the shopping cart
+     * @param product the product to add
+     * */
     fun addToCart(product: Product) {
         println("The product ${product.name} has been added to your cart")
         this.shoppingCart.add(product)
     }
 
+    /**
+     * Remove a product from the shopping cart
+     * @param product the product to remove
+     * */
     private fun removeFromCart(product: Product) {
         println("The product ${product.name} has been removed to your cart")
         this.shoppingCart.remove(product)
     }
 
+    /**
+     * Add a product to the favorite list
+     * @param product the product to add
+     * */
     fun addToFavorite(product: Product) {
         println("The product ${product.name} has been added to your favorite list")
         this.favorites.add(product)
     }
 
+    /**
+     * Remove a product from the favorite list
+     * @param product the product to remove
+     * */
     private fun removeFromFavorites(product: Product) {
         println("The product ${product.name} has been removed to your cart")
         this.favorites.remove(product)
     }
 
+    /**
+     * Add a product to the orders list
+     * @param order the order to add
+     * */
     private fun addOrder(order: Order) {
         println("The order ${order.id} with a total of $ ${order.total} has been completed!")
         this.orders.add(order)

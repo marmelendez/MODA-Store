@@ -1,3 +1,8 @@
+/**
+ * Data class Order
+ *
+ * Contains the properties of an Order
+ */
 package project
 
 import java.time.LocalDateTime

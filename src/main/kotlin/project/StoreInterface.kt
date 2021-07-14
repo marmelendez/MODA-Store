@@ -1,8 +1,9 @@
+/**
+ * Interface of Store
+ *
+ * Declare the properties and methods of a Store
+ */
 package project
-
-import project.Product
-import project.RegisteredUser
-
 
 interface StoreInterface {
     val name: String

@@ -1,3 +1,8 @@
+/**
+ * Data class Category
+ *
+ * Contains the properties of a Category
+ */
 package project
 
 data class Category (
